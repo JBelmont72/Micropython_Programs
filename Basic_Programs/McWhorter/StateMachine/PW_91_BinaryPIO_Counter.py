@@ -3,31 +3,31 @@
 lesson 92 PW
 https://www.youtube.com/watch?v=ob80LODRleo
 '''
-import rp2
-import time
-from machine import Pin
-## decorator
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-def pioProg():
-    wrap_target()
-    set(x,0b1111)
-    label('dooLoop')
-    mov(pins,invert(x))[31]
+# import rp2
+# import time
+# from machine import Pin
+# ## decorator
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# def pioProg():
+#     wrap_target()
+#     set(x,0b1111)
+#     label('dooLoop')
+#     mov(pins,invert(x))[31]
     
-    set(y,0b1111)[31]
+#     set(y,0b1111)[31]
 
 
-    mov(isr,y)
-    in_(y,1)
-    #in_(y,4)
-    mov(y,isr)
-    label('loop')
-    # label('delay')##commented these when I run it in vscode
-    #nop()[31]
-    jmp(y_dec,'loop')
+#     mov(isr,y)
+#     in_(y,1)
+#     #in_(y,4)
+#     mov(y,isr)
+#     label('loop')
+#     # label('delay')##commented these when I run it in vscode
+#     nop()[31]
+#     jmp(y_dec,'loop')
     
-    jmp(x_dec,'dooLoop')
-    wrap()
+#     jmp(x_dec,'dooLoop')
+#     wrap()
     
     # wrap_target()
     # set(x,0b1111)
@@ -92,10 +92,10 @@ def pioProg():
     # wrap()
     
     
-sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10million  precision of o.1 micrixseconds
-sm0.active(1)
+# sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10million  precision of o.1 micrixseconds
+# sm0.active(1)
 
-'''
+
 import rp2
 import time
 from machine import Pin
@@ -105,15 +105,23 @@ def pioProg():
     wrap_target()
     pull()
     mov(x,osr)
-    #set(x,0b1111)
+    # set(x,0b1111)[31]
     label('bitloop')
-    mov(pins,invert(x))[31]
     
+    mov(pins,x)
+    set(y,0b11111)
+    mov(isr,y)
+    in_(y,1)
+    mov(y,isr)
+    label('timeloop')
+    nop()[31]
+    jmp(y_dec,'timeloop')
+    nop()[31]
+    nop()[31]
     
-
-    jmp(x_dec,'bitloop')[31]
+    jmp(x_dec,'bitloop')[31] 
     push()
-    wrap()
+    wrap() 
 sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))
 sm0.active(1)
 try:
@@ -128,7 +136,7 @@ try:
 except KeyboardInterrupt:
     sm0.active(0)
     print('done')
-'''
+
 '''
 ### countdown timer
 import rp2

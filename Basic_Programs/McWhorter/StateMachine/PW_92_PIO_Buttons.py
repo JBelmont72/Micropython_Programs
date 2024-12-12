@@ -1,4 +1,4 @@
-'''
+''' Works in thonny not vs code always
 lesson 92 PW
 https://www.youtube.com/watch?v=ob80LODRleo
 
@@ -50,29 +50,76 @@ sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10mil
 sm0.active(1)
 '''
 ## lesson 92 simple toggle switch minute 13
+## this is basic and just turns the leds on with the button press
+# import rp2
+# import time
+# from machine import Pin
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*5,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# def wait_pin_low():
+#     set(x,0b01111)
+#     wrap_target()
+#     # wait(polarity, src,index)
+#     # Polarity wating for a 0 or a 1
+#     # SRC  looking at the source for the polarity which can be a gpio pin, or a Pin, or an irq interrupt,
+#     ## the Pin parameter is relative to the in-base pin, can be 0, 1,2 etc
+#     # index   parmeter for the source.  woujld be the GPIO_Pin number or the 0,1,2 etc if a Pin for the src
+#     wait(1,pin,0)
+#     # nop()[31] ## 16 milliseconds
+#     # nop()[31]  ## another 16 milliseconds ot debounce the switch woth 32 milliseconds
+#     mov(pins,x)
+    
+#     wrap()
+# sm0=rp2.StateMachine(0,wait_pin_low, in_base=Pin(15,Pin.PULL_DOWN),    freq=2000,out_base=Pin(16)) ## note that the input pin is instantiated here
+# sm0.active(1)
+###~~~~~~~~~~~~~~the next is with wait pins to toggle by button on pin(14)
 import rp2
 import time
 from machine import Pin
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*5,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*6,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 def wait_pin_low():
-    set(x,0b01111)
+    set(x,0b00000)
     wrap_target()
-    # wait(polarity, src,index)
-    # Polarity wating for a 0 or a 1
-    # SRC  looking at the source for the polarity which can be a gpio pin, or a Pin, or an irq interrupt,
-    ## the Pin parameter is relative to the in-base pin, can be 0, 1,2 etc
-    # index   parmeter for the source.  woujld be the GPIO_Pin number or the 0,1,2 etc if a Pin for the src
-    wait(1,pin,0)
+    wait(1,gpio,14)
     nop()[31] ## 16 milliseconds
     nop()[31]  ## another 16 milliseconds ot debounce the switch woth 32 milliseconds
+    mov(x,invert(x))
     mov(pins,x)
-    
+    #wait(0,pin,0)
+    wait(0,gpio,14)
+    nop()[31]
+    nop()[31]    
     wrap()
-sm0=rp2.StateMachine(0,wait_pin_low, in_base=Pin(15,Pin.PULL_DOWN),    freq=2000,out_base=Pin(16)) ## note that the input pin is instantiated here
+sm0=rp2.StateMachine(0,wait_pin_low, in_base=Pin(14,Pin.PULL_DOWN),    freq=2000,out_base=Pin(16)) ## note that the input pin is instantiated here
 sm0.active(1)
 
+''' button controoled binary counter  have leds on pins 16-19, and button on pin14 ( will add a button on pin 15)
+Lesson 93 PW  PIO StateMachine'''
+import rp2
+import time
+from machine import Pin
+@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*6,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def wait_pin_low():
+    wrap_target()
+    set(x,0b1111)
+    label('bitLoop')
+    mov(pins,invert(x))### without the invert, it is a countdown binary counter.
+    ## note that the invert(x) is for the x going to the pins. I made an error in trying to invert the x earlier with mov(x,inveret(x) NO GOOD
+    #wait(1,pin,0)
+    wait(1,gpio,14)
+    nop()[31] ## 16 milliseconds
+    nop()[31]  ## another 16 milliseconds ot debounce the switch woth 32 milliseconds
+    #wait(0,pin,0)
+    wait(0,gpio,14)
+    nop()[31]
+    nop()[31]
+    jmp(x_dec,'bitLoop')
+    wrap()
+pin15 =Pin(15,Pin.IN,Pin.PULL_DOWN)
+sm0=rp2.StateMachine(0,wait_pin_low, in_base=Pin(14,Pin.PULL_DOWN),freq=2000,out_base=Pin(16)) ## note that the input pin is instantiated here
+sm0.active(1)
 
 '''
+
 ### countdown timer
 
 
