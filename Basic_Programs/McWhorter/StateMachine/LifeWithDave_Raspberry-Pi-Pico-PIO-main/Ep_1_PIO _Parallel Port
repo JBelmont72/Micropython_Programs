@@ -20,3 +20,34 @@ while True:
         paral_sm.put(i)
         print(i)
         sleep(0.01 )
+
+## i added a little bit to it below but basically the same
+# from machine import Pin
+# from rp2 import PIO, StateMachine, asm_pio
+# from time import sleep
+
+# @asm_pio(out_init=(rp2.PIO.OUT_HIGH,) * 6, out_shiftdir=PIO.SHIFT_RIGHT, 
+#  autopull=True, pull_thresh=16)
+# def paral_prog():
+#     pull()
+#     set(y,0b11111)
+#     mov(isr,y)
+#     in_(y,2)
+#     #in_(y,4)
+#     mov(y,isr)
+#     label('timer')
+#     jmp(y_dec,'timer')
+#     out(pins, 6)
+#     push()
+
+# paral_sm = StateMachine(0, paral_prog, freq=2000, out_base=Pin(16))
+                                                               
+# paral_sm.active(1)
+
+# while True:
+#     for i in range(500):
+#         paral_sm.put(i)
+#         print(i)
+#         sleep(0.01 )
+#         a=paral_sm.get()
+#         print('isr value',a)

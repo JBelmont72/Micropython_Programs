@@ -70,7 +70,7 @@ def wait_pin_low():
     wrap()
 sm0=rp2.StateMachine(0,wait_pin_low, in_base=Pin(15,Pin.PULL_DOWN),    freq=2000,out_base=Pin(16)) ## note that the input pin is instantiated here
 sm0.active(1)
-
+'''
 
 '''
 ### countdown timer
