@@ -1,0 +1,35 @@
+'''  PW pico lesson 98 Servo control
+'''
+from machine import Pin
+import rp2
+@rp2.asm_pio(set_init=rp2.PIO.OUT_LOW,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def servoSet():
+    set(x,0b11111)
+    in_(x,5)
+    set(x,0b0100)
+    in_(x,4)
+    #set(x,0b00000)
+    #in_(x,1)
+    mov(osr,isr)
+    
+    mov(isr,null)
+    set(y,0b10011)
+    in_(y,5)
+    set(y,0b10001)
+    in_(y,5)
+    set(y,0b00000)
+    in_(y,5)
+    
+    wrap_target()
+    mov(x,osr)
+    mov(y,isr)
+    set(pins,0)
+    label('timeLoop')
+    jmp(x_not_y,'nxt')
+    set(pins,1)
+    label('nxt')
+    jmp(y_dec,'timeLoop')    
+    wrap()
+    
+sm0 = rp2.StateMachine(0,servoSet, freq=2000000, set_base=Pin(20))
+sm0.active(1)
