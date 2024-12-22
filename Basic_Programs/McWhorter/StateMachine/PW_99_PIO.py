@@ -35,4 +35,4 @@ while True:
     for angle in range(180,0,-1):
         pw=int(500+angle*2000/180)
         sm0.put(pw)
-        sm0.exec("pull()"
+        sm0.exec("pull()")

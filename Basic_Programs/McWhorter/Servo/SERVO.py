@@ -9,3 +9,4 @@ class servo:
     def pos(self,angle):
         writeVal=6553/180*angle+1638
         self.obj.duty_u16(int(writeVal))
+

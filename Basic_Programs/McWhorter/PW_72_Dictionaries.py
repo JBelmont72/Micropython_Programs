@@ -1,9 +1,11 @@
 '''
 
 '''
-from RGB_lib import *
-from machine import PWM,Pin
-from time import sleep
+# from RGB_lib import *
+# from machine import PWM,Pin
+# from time import sleep
+
+
 # from machine import Pin,PWM
 # from time import sleep
 
@@ -16,6 +18,7 @@ from time import sleep
 #                 'orange':[255,32,0],'white':[255,255,255],'off':[0,0,0],'purple':[127,0,255]})
 # # print(myColor)
 # ## set up pwm for three pins for RGB led
+'''
 def LightLED(mc):
     print('selected color is ',mc)
 
@@ -64,14 +67,33 @@ except KeyboardInterrupt:
     rLed.duty_u16(0)
     gLed.duty_u16(0)
     bLed.duty_u16(0)
-       
-# Dict={1:'A',2:'B',3:'Bob',4:'Jane'}
-# print(Dict.items())
-# print(Dict.keys())
-# Dict[5]='Sam'
+ '''  
+# myList= ['jo','sam','mirriam','julia','jud']
+# # del myList[1]
+# a= myList.pop(0)
+
+# print(a)
+# print(myList)
+ 
+     
+Dict={1:'A',2:'B',3:'Bob',4:'Jane'}
+print(Dict.items())
+print(Dict.keys())
+Dict[5]='Sam'
+print(Dict)
+Dict['Hi']='good-bye'
+Dict['dog']='Fuzzer'
 # print(Dict)
-# Dict['Hi']='good-bye'
+# for k,v in Dict.items():
+#     print(k,v,Dict.get(k)) 
+# print(Dict[1])
+# print(Dict.get(1))
+# print(Dict.get(10,'not found in dictionary'))
+# print(Dict.pop(1)) ## a valueis returned, the pop is the key
+# print(Dict.popitem())## a tuple
 # print(Dict)
+# b=Dict.popitem()
+# print('popped item: ',b)
 # Dict['friends']=['Tom','Bill','Mike','Joe']
 # print(Dict)
 # print(Dict['friends'])
@@ -79,12 +101,25 @@ except KeyboardInterrupt:
 # Dict['dog']='Fuzzer'
 # print(Dict.values())
 # print(Dict.keys())
-# if 'A' not  in Dict: ## must use the key value
-#     print("'A' is not in Dict")
-# if 1 in Dict:
-#     print('1 is in Dict')
-# if 'dog'  in Dict:
-#     print('"dog" is in Dict')
-#     print("'dog' is the key. the Value is ",Dict['dog']) ## this gives the value of the key 'dog'
-# for i in Dict:
-#     print(i, ' ',Dict[i],'  ')
+if 'A' not  in Dict: ## must use the key 
+    print("'A' is not in Dict")
+if 1 in Dict:
+    print('1 is in Dict')
+if 'dog'  in Dict:
+    print('"dog" is in Dict')
+    print("'dog' is the key. the Value is ",Dict['dog']) ## this gives the value of the key 'dog'
+for i in Dict:
+    print(i, ' ',Dict[i],'  ')
+    
+
+places = {
+    "Paris": "France",
+    "Tokyo": "Japan",
+    "New York": "USA"
+}
+
+# Removing and returning the last element
+first_place = places.popitem()
+print(f"We just popped out {first_place[0]}, which is located in {first_place[1]}.")
+second_place=places.popitem()
+print(f'print {second_place[0]} is in {second_place[1]}.')

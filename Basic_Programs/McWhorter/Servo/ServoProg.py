@@ -8,7 +8,7 @@ import SERVO
  
 greenPin=14
 redPin=15
-servoPin=17
+servoPin=16
  
 LED=""
  
