@@ -31,7 +31,7 @@ def servoSet():
     wrap()  
 sm0 = rp2.StateMachine(0,servoSet, freq=2000000, set_base=Pin(16))
 sm0.active(1)
-## 2d statemachine\
+## 2d statemachine
 @rp2.asm_pio(set_init=rp2.PIO.OUT_LOW,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 def servoSet2():
     wrap_target()
@@ -87,12 +87,12 @@ def servoSet():
     label('nxt')
     jmp(y_dec,'timeLoop')    
     wrap()  
-sm0 = rp2.StateMachine(0,servoSet, freq=2000000, set_base=Pin(16))
+sm0 = rp2.StateMachine(0,servoSet, freq=2000000, set_base=Pin(1))
 
 ## 2d statemachine\
-#@rp2.asm_pio(set_init=rp2.PIO.OUT_LOW,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# @rp2.asm_pio(set_init=rp2.PIO.OUT_LOW,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 
-sm1 = rp2.StateMachine(4,servoSet, freq=2000000, set_base=Pin(17))
+sm1 = rp2.StateMachine(4,servoSet, freq=2000000, set_base=Pin(0))
 sm1.active(1)
 sm0.active(1)
 sm1.put(20000)
