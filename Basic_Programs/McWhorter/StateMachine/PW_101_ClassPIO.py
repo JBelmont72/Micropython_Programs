@@ -91,10 +91,10 @@ myServo2=servoState(1)
 
 while True:
     
-    for angle in range(0,180,4):
+    for angle in range(0,180,2):
         myServo1.servoAngle(angle)
         myServo2.servoAngle(180-angle)
-    for angle in range(180,0,-4):
+    for angle in range(180,0,-2):
         myServo1.servoAngle(angle)
         myServo2.servoAngle(180-angle)
         
