@@ -85,6 +85,7 @@ except KeyboardInterrupt:
     sm0.active(0)
     print('All Done')
 '''
+# rp2.asm_pio(*, out_init=None, set_init=None, sideset_init=None, in_shiftdir=0, out_shiftdir=0, autopush=False, autopull=False, push_thresh=32, pull_thresh=32, fifo_join=PIO.JOIN_NONE)
 ###############3d part of lesson 87 on StateMachine, here we PULL data from the tx_fifo()
 
 import time
