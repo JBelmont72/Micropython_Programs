@@ -94,7 +94,7 @@ sm0.active(1)
 #####
 ### lesson92 wait button control TOGGLE
 '''
-'''
+
 import rp2
 from machine import Pin
 
@@ -116,5 +116,10 @@ def pioProg():
 But15=Pin(15,Pin.IN,Pin.PULL_DOWN)
 sm0=rp2.StateMachine(0,pioProg,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),freq=2000,out_base=Pin(16))
 sm0.active(1)
-'''
+try:
+    while True:
+       pass
 
+except KeyboardInterrupt:
+    sm0.active(0)
+    print('All Done')
