@@ -59,13 +59,13 @@ def servoSet():
 sm1=rp2.StateMachine(1,servoSet,freq=2000000,set_base=Pin(0))
 sm1.active(1)
 sm1.put(20000)
-sm1.exec('pull()')
-sm1.exec('mov(isr,osr)')
+sm1.exec('pull()')## pulls into the OSR
+sm1.exec('mov(isr,osr)')## moves the period of 20,000 to the isr
 while True:
     for angle in range(0,180,1):
         pw=int(500+angle*2000/180)
         sm1.put(pw)
-        sm1.exec('pull()')
+        sm1.exec('pull()')## now loads the OSR with the pulse width sequentially
     sleep(1)
     for angle in range(180,0,-1):
         pw=int(500+angle*(2000/180))

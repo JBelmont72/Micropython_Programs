@@ -155,6 +155,9 @@ def pioProg():
 but14=Pin(14,Pin.IN,Pin.PULL_DOWN)    
 but15=Pin(15,Pin.IN,Pin.PULL_DOWN)    
 sm0=rp2.StateMachine(0,pioProg,freq=2000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),out_base=Pin(16,Pin.OUT))
-sm0.active(1)   
-while True:
-    pass
+sm0.active(1)
+try:   
+    while True:
+        pass
+except KeyboardInterrupt:
+    print('Bye!')

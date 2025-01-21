@@ -69,7 +69,7 @@ x is pulse width, move to osr,   perIod to isr
 #     set(x,0b11110)
 #     in_(x,5)
 #     set(x,0b0011)
-#     # in_(x,1)
+#     in_(x,1)
 #     mov(osr,isr) 
 #     mov(isr,null)
 #     set(y,0b10011) 
@@ -140,81 +140,81 @@ x is pulse width, move to osr,   perIod to isr
 # sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
 # sm0.active(1)
 #####5 jan 2024 take above and make it take commands frompython
-# import rp2
-# from machine import Pin
-# import time
-# @rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,), out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-# def Servo():
-#     wrap_target()
-#     mov(y,isr)
-#     mov(x,osr)
-#     set(pins,0)
-#     label('decr_Y')
-#     jmp(x_not_y,'loop')
-#     set(pins,1)
-#     label('loop')
-#     jmp(y_dec,'decr_Y')
-#     wrap()
-# sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
-# sm0.active(1)
-# sm0.put(20000)
-# sm0.exec('pull()')
-# sm0.exec('mov(isr,osr)')
-
-
-# while True:
-#     for angle in range(0,180,1):
-#         pw=int(500+angle*2000/180)
-#         sm0.put(pw)
-#         sm0.exec('pull()')
-#     time.sleep(1)
-#     for angle in range(180,0,-1):
-#         pw=int(500+angle*(2000/180))
-#         sm0.put(pw)
-#         sm0.exec('pull()')
-        
-######make a servo class
 import rp2
-import time
 from machine import Pin
-class ServoState:
-    count=0
-    freq=2000000
+import time
+@rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,), out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def Servo():
+    wrap_target()
+    mov(y,isr)
+    mov(x,osr)
+    set(pins,0)
+    label('decr_Y')
+    jmp(x_not_y,'loop')
+    set(pins,1)
+    label('loop')
+    jmp(y_dec,'decr_Y')
+    wrap()
+sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
+sm0.active(1)
+sm0.put(20000)
+sm0.exec('pull()')
+sm0.exec('mov(isr,osr)')
 
-    @rp2.asm_pio(set_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-    def servoSet():
-        wrap_target()
-        mov(x,osr)
-        mov(y,isr)
-        set(pins,0)
-        label('decr_Y')
-        jmp(x_not_y,'loop')
-        set(pins,1)
-        label('loop')
-        jmp(y_dec,'decr_Y')
-        wrap()
-    def __init__(self,pin):
-        # self.sm = rp2.StateMachine(servoState.counter,servoState.servoSet, servoState.freq, set_base=servoPin)# instantiation
-        self.sm0=rp2.StateMachine(ServoState.count,ServoState.servoSet,ServoState.freq,set_base=Pin(pin))
-        self.sm0.active(1)
-        self.sm0.put(20000)
-        self.sm0.exec('pull()')
-        self.sm0.exec('mov(isr,osr)')
-        ServoState.count=ServoState.count+1
-        # print(str(ServoState.count)+'   '+str(ServoState.servoSet)+''+str(pin))
-    def ServoAngle(self,angle):
-        pw=int(500+angle*(2000/180))
-        self.sm0.put(pw)
-        self.sm0.exec('pull()')
 
-            
-myServo=ServoState(0)
 while True:
     for angle in range(0,180,1):
-        myServo.ServoAngle(angle)
+        pw=int(500+angle*2000/180)
+        sm0.put(pw)
+        sm0.exec('pull()')
     time.sleep(1)
     for angle in range(180,0,-1):
-        myServo.ServoAngle(angle)
+        pw=int(500+angle*(2000/180))
+        sm0.put(pw)
+        sm0.exec('pull()')
+        
+######make a servo class
+# import rp2
+# import time
+# from machine import Pin
+# class ServoState:
+#     count=0
+#     freq=2000000
+
+#     @rp2.asm_pio(set_init=rp2.PIO.OUT_LOW, out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+#     def servoSet():
+#         wrap_target()
+#         mov(x,osr)
+#         mov(y,isr)
+#         set(pins,0)
+#         label('decr_Y')
+#         jmp(x_not_y,'loop')
+#         set(pins,1)
+#         label('loop')
+#         jmp(y_dec,'decr_Y')
+#         wrap()
+#     def __init__(self,pin):
+#         # self.sm = rp2.StateMachine(servoState.counter,servoState.servoSet, servoState.freq, set_base=servoPin)# instantiation
+#         self.sm0=rp2.StateMachine(ServoState.count,ServoState.servoSet,ServoState.freq,set_base=Pin(pin))
+#         self.sm0.active(1)
+#         self.sm0.put(20000)
+#         self.sm0.exec('pull()')
+#         self.sm0.exec('mov(isr,osr)')
+#         ServoState.count=ServoState.count+1
+#         # print(str(ServoState.count)+'   '+str(ServoState.servoSet)+''+str(pin))
+#     def ServoAngle(self,angle):
+#         pw=int(500+angle*(2000/180))
+#         self.sm0.put(pw)
+#         self.sm0.exec('pull()')
+
+            
+# myServo=ServoState(0)
+# while True:
+#     for angle in range(0,180,1):
+#         myServo.ServoAngle(angle)
+#     time.sleep(1)
+#     for angle in range(180,0,-1):
+#         myServo.ServoAngle(angle)
 ####~~~~~~~~~~~~~       
 
         

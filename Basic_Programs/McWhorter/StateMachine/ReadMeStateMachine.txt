@@ -1,4 +1,6 @@
 '''
+https://medium.com/geekculture/raspberry-pico-programming-with-pio-state-machines-e4610e6b0f29
+
 StateMachine ReadMe
 Chapter 3 is about the stateMachine
 https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf
@@ -61,3 +63,12 @@ But15=Pin(15,Pin.IN,Pin.PULL_DOWN)
 sm0=rp2.StateMachine(0,pioProg,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),freq=2000,out_base=Pin(16))
 sm0.active(1)
 '''
+Move data inside the shift register
+in SOURCE count - Shift data into the ISR, where SOURCE can be X, Y, OSR or ISR, and count is 0...32
+out DESTINATION count - Shift data out of the OSR, to DESTINATION X, Y, ISR
+mov DESTINATION, SOURCE - Move data from SOURCE (X, Y, OSR or ISR) to DESTINATION (X, Y, OSR or ISR)
+set DESTIANTION, data - write a 5-bit data value to DESTIANTION (X, Y)
+Move data between the shift register and the main program
+pull - Load data from the TX FIFO into the OSR
+push - Push data from the ISR to the RX FIFO, then clear the ISR
+irq INDEX op - Modify the IRQ number index to be either cleared (op=0) or set (op=1)
