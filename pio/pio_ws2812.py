@@ -24,7 +24,7 @@ def ws2812():
 
 
 # Create the StateMachine with the ws2812 program, outputting on Pin(22).
-sm = rp2.StateMachine(0, ws2812, freq=8_000_000, sideset_base=Pin(22))
+sm = rp2.StateMachine(0, ws2812, freq=8000000, sideset_base=Pin(22))
 
 # Start the StateMachine, it will wait for data on its FIFO.
 sm.active(1)
