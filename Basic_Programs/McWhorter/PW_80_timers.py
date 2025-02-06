@@ -1,14 +1,16 @@
 '''creating and using timers Lesson 80
+#1 PROGRAM HAS JUST PERIODIC callback  mode periodic 
+#2 Program has one SHot
 '''
 # from machine import Pin,Timer
 # import time
 # rPin=17
 # gPin=16
-# bPin=13
+# bPin=18
 # rLed=Pin(rPin,Pin.OUT)
 # gLed=Pin(gPin,Pin.OUT)
 # bLed=Pin(bPin,Pin.OUT)
-# buzzPin=14
+# buzzPin=15
 # Buzzer=Pin(buzzPin,Pin.OUT)
 # def redBlinker(source):
 #     rLed.toggle()
@@ -45,24 +47,24 @@
 # except KeyboardInterrupt:
 #     print('all done')
 #     redTimer.deinit()
-#     # buzzerTimer.deinit()
+#     buzzerTimer.deinit()
 #     greenTimer.deinit()
 #     time.sleep(.5)
 #     rLed.value(0)
 #     gLed.value(0)
 #     bLed.value(0)
 #     Buzzer.value(0)
-################# now lesson 81 with an assymetric pulse using gthe one shot
+################# now lesson 81 with an assymetric pulse using gthe one shot Program 2
 
 # from machine import Pin,Timer
 # import time
 # rPin=17
 # gPin=16
-# bPin=13
+# bPin=18
 # rLed=Pin(rPin,Pin.OUT)
 # gLed=Pin(gPin,Pin.OUT)
 # bLed=Pin(bPin,Pin.OUT)
-# buzzPin=14
+# buzzPin=15
 # Buzzer=Pin(buzzPin,Pin.OUT)
 # def gLedOFF(pin):
 #     gLed.value(0)
@@ -74,7 +76,7 @@
 #     Buzzer.value(0)  
 # def redBlinker(source):
 #     rLed.value(1)
-#     print('red led on')
+#     print('red blinking')
 #     redOFF=Timer(period=100,mode=Timer.ONE_SHOT,callback=turnRedOff)
       
 # def buzzer(source):
@@ -101,7 +103,7 @@
 #         # gLed.value(1)
 #         bLed.value(1)
 #         print('Blue LED')
-#         time.sleep(.5)
+#         time.sleep(5)
 #         # rLed.value(0)
 #         # gLed.value(0)
 #         bLed.value(0)
@@ -109,7 +111,7 @@
 # except KeyboardInterrupt:
 #     print('all done')
 #     redTimer.deinit()
-#     # buzzerTimer.deinit()
+#     buzzerTimer.deinit()
 #     greenTimer.deinit()
 #     time.sleep(.5)
 #     rLed.value(0)
@@ -272,8 +274,8 @@
 #     gLed.value(0)
 #     bLed.value(0)
 
-##################
-## this is a binary counter using perioid timers, works fine
+################## Program 5
+# this is a binary counter using perioid timers, works fine
 # import time
 # from machine import Pin,Timer
 # rPin=16
@@ -321,7 +323,7 @@
 #     gLed.value(0)
 #     bLed.value(0)
 #     yLed.value(0)
-##############binary counter using a push button and interrupts
+##############binary counter using a push button and interrupts program 6
 
 import time
 from machine import Pin,Timer
@@ -348,12 +350,13 @@ tDown=time.ticks_ms
 butStateOld=0
 def Binary(pin):
     global press , butStateOld, tUP, tDown
+    tUP=time.ticks_ms
     butState=Button.value()
     if butState==1:
         tDown=time.ticks_ms()
     if butState==0:
         tUp=time.ticks_ms()
-    if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)< (-130000000)) :
+    if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)<25) :
     # if butState==1 and butStateOld==0:
         press +=1
         print('TRIGGER: ',press)
@@ -368,8 +371,9 @@ def Binary(pin):
             bLed.toggle()
         if press%8==0:
             yLed.toggle()
-        
-    # butStateOld=0
+    # tDown=tUP
+    # tUp=tDown   
+    butStateOld=0
     
     
 Button.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING ,handler=Binary)  ## i got around using Pin.IRQ_Falling by resetting the butStateOld to 0 

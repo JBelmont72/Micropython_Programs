@@ -16,47 +16,120 @@ def debounce_callback(pin):
     global debounce_timer
     debounce_timer=None
 '''
-####does not work  this is from the Random Nerds interupt/tiomer lesson section p 160
-# from machine import Pin,Timer
+# from machine import Pin    ### program 1 of lesson 83
 # import time
 # butPin=15
 # rPin=17
 # gPin=16
 # bPin=18
-# Button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
+# pTime=0
+# watchButton=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
 # rLed=Pin(rPin,Pin.OUT)
 # gLed=Pin(gPin,Pin.OUT)
 # bLed=Pin(bPin,Pin.OUT)
-# x=0
-# counter=0
-# debounce_timer=None
-# def button_pressed(pin):
-#     global counter, debounce_timer
-#     counter +=1
-#     bLed.toggle()
-#     debounce_timer=Timer(period= 800,mode= Timer.ONE_SHOT,callback= debounce_callback)
-    
-#     print('Button Pressed: ',counter)
-# def debounce_callback(pin):
-#     global debounce_timer
-#     debounce_timer = None
-# Button.irq(trigger=Button.IRQ_RISING,handler = button_pressed)
+# press =0
+# def IntSwitch(pin):
+#     global press
+#     pTIme=time.ticks_ms()
+#     press =press +1
+#     gLed.toggle()
+#     print('Triggered: ',press)
+#     pTImeOld=pTime
+
+
+# watchButton.irq(trigger=Pin.IRQ_RISING,handler=IntSwitch)
+
 # try:
 #     while True:
-#         ButVal=Button.value()
-#         print(ButVal)
-#         print(x)
-#         if ButVal==1:
-#             rLed.value(1)
-#         else:
-#             rLed.value(0)
-#         time.sleep(1)
-#         x+=1
+#         pass
+  
 # except KeyboardInterrupt:
 #     print('all done')
 #     rLed.value(0)
 #     gLed.value(0)
 #     bLed.value(0)
+#######~~~~~~~~
+####does not work  this is from the Random Nerds interupt/tiomer lesson section p 160
+from machine import Pin,Timer
+import time
+butPin=15
+rPin=17
+gPin=16
+bPin=19
+Button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
+rLed=Pin(rPin,Pin.OUT)
+gLed=Pin(gPin,Pin.OUT)
+bLed=Pin(bPin,Pin.OUT)
+x=0
+press=0
+downTime=0
+# upTime=time.ticks_ms()
+OldButState=0
+def button_pressed(pin):
+    global press,upTime,downTime,OldButState
+    NewButState=Button.value()
+    # upTime=time.ticks_ms()
+    # if NewButState==1:##Pressed, record the time the button was pressed 
+    #     downTime=time.ticks_us()
+    # if OldButState==0:
+    #     upTime=time.ticks_us()  
+    # if NewButState==1 and OldButState==0 and (time.ticks_diff(downTime,upTime)<25):
+    # # if NewButState==1 and OldButState==0 :
+    #     time_diff=time.ticks_diff(downTime,upTime)
+    #     print(time_diff)
+    #     print(f'{downTime}  {upTime}')
+    #     rLed.toggle
+    #     OldButState=NewButState
+ 
+    #     print('Trigger: ',press)
+    #     press +=1
+    # # upTime=downTime
+    # OldButState=NewButState
+    # downTime=time.ticks_us()
+    if NewButState==1:##Pressed, record the time the button was pressed 
+        downTime=time.ticks_us()
+    if OldButState==0:
+        upTime=time.ticks_us()  
+    if NewButState==1 and OldButState==0 and (time.ticks_diff(downTime,upTime)<(20)):
+    # if NewButState==1 and OldButState==0 :
+        time_diff=time.ticks_diff(downTime,upTime)
+        print(time_diff)
+        print(f'{downTime}  {upTime}')
+        
+        OldButState=NewButState
+        if press>16:
+            press =press-16
+        if press%2==0:
+            bLed.toggle()
+        if press%4==0:
+            gLed.toggle()
+        rLed.toggle()
+        print('Trigger: ',press)
+        press +=1    
+    # upTime=downTime
+    OldButState=0
+    # print("old but state ",OldButState)
+    
+    
+    
+    
+Button.irq(trigger=Button.IRQ_RISING|Button.IRQ_FALLING,handler = button_pressed)
+try:
+    while True:
+        # ButVal=Button.value()
+        # print(ButVal)
+        print(x)
+        # if ButVal==1:
+        #     rLed.value(1)
+        # else:
+        #     rLed.value(0)
+        time.sleep(1)
+        x+=1
+except KeyboardInterrupt:
+    print('all done')
+    rLed.value(0)
+    gLed.value(0)
+    bLed.value(0)
 ### debouncing from the keith lohmeyer version of homework for lesson 83 PW
 ### this works fine SORT OF - not really
 # from machine import Pin,Timer
@@ -346,37 +419,37 @@ def debounce_callback(pin):
 #         time.sleep(2)
 # ## shilleh    https://shillehtek.com/blogs/news/how-to-connect-and-use-the-hcsr501-pir-sensor-with-a-raspberry-pi-pico-pico-w?utm_source=youtube&utm_medium=product_shelf
 
-from machine import Pin
-import time
+# from machine import Pin
+# import time
 
-# Initialize PIR sensor on GPIO 0
-pir = Pin(0, Pin.IN, Pin.PULL_DOWN)
-led = Pin(16, Pin.OUT)  # Initialize LED on GPIO 2
-pir_state = False  # Start assuming no motion detected
-last_motion_time = 0  # Timestamp of the last motion detected
-debounce_time = 3  # Debounce period in seconds
+# # Initialize PIR sensor on GPIO 0
+# pir = Pin(0, Pin.IN, Pin.PULL_DOWN)
+# led = Pin(16, Pin.OUT)  # Initialize LED on GPIO 2
+# pir_state = False  # Start assuming no motion detected
+# last_motion_time = 0  # Timestamp of the last motion detected
+# debounce_time = 3  # Debounce period in seconds
 
-print("PIR Module Initialized")
-time.sleep(1)  # Allow the sensor to stabilize
-print("Ready")
+# print("PIR Module Initialized")
+# time.sleep(1)  # Allow the sensor to stabilize
+# print("Ready")
 
-while True:
-    val = pir.value()  # Read input value from PIR sensor
-    current_time = time.time()
+# while True:
+#     val = pir.value()  # Read input value from PIR sensor
+#     current_time = time.time()
 
-    if val == 1:  # Motion detected
-        if not pir_state and (current_time - last_motion_time >= debounce_time):
-            print(current_time - last_motion_time)
-            print("Motion detected!")
-            pir_state = True
-            led.on()  # Turn on LED
-            last_motion_time = current_time  # Update the last motion timestamp
+#     if val == 1:  # Motion detected
+#         if not pir_state and (current_time - last_motion_time >= debounce_time):
+#             print(current_time - last_motion_time)
+#             print("Motion detected!")
+#             pir_state = True
+#             led.on()  # Turn on LED
+#             last_motion_time = current_time  # Update the last motion timestamp
 
-    elif val == 0: 
-        if pir_state and (current_time - last_motion_time >= debounce_time):
-            pir_state = False
-            led.off()
-            last_motion_time = current_time  # Update the last motion timestamp
+#     elif val == 0: 
+#         if pir_state and (current_time - last_motion_time >= debounce_time):
+#             pir_state = False
+#             led.off()
+#             last_motion_time = current_time  # Update the last motion timestamp
 
-    time.sleep(0.1)  # Small delay to prevent spamming
+#     time.sleep(0.1)  # Small delay to prevent spamming
     

@@ -58,7 +58,7 @@ import utime
 
 
 trig_pin = Pin(16, Pin.OUT)
-echo_pin = Pin(15, Pin.IN)
+echo_pin = Pin(17, Pin.IN)
 
 ## i took the below function and put it in the While True loop
 # def ultraSonic():
