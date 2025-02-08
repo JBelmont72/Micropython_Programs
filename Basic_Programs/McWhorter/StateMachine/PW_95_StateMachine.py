@@ -32,7 +32,7 @@ also: jmp(pin,'  ') jumps if pin is not zero, if a 1 then jumps
 #     label('next')		##needed to do this inorder to use the jmp and the y-dec comm
     
 #     wait(0,pin,0)
-    
+#     mov(pins,y)
 #     mov(pins,invert(y))
 #     jmp('readAgain')
 #     label('checkGreen')
@@ -52,6 +52,8 @@ also: jmp(pin,'  ') jumps if pin is not zero, if a 1 then jumps
 
 # # Set the IRQ handler to print the millisecond timestamp.
 # sm0.irq(lambda p: print(time.ticks_ms()))
+# while True:
+#       pass
 ###~~~~~~~~~~~~~~~~~~~~~~
 
 # import time
@@ -195,57 +197,57 @@ also: jmp(pin,'  ') jumps if pin is not zero, if a 1 then jumps
 # while True:
 #     pass
 ######### used the above and modified it to an up down counter
-# import rp2
-# from time import sleep
-# from machine import Pin
-# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-# def pioProg():
-#     set(y,0b1111)
-#     wrap_target()
-#     label('readAgain')
-#     # mov(osr,y) ## okay to have almost anywhere before it is first used. maintains active count
-#     mov(isr,null)   
-#     in_(pins,2)
-#     nop()[31]
-#     nop()[31]
-#     mov(x,isr)
-#     jmp(not_x,'readAgain')
-#     mov(osr,y)
-#     set(y,0b0001)
-#     jmp(x_not_y,'checkBlue')
-#     mov(y,osr)
-#     # wait(1,pin,0)
-#     nop()[31]
-#     nop()[31]
-#     # wait(0,pin,0)
-#     ## note inverted y then decremented and then inverted again, and THEN moved the twice inverted y to pins!!!!!!!
-#     mov(y,invert(y)) ## is y is 0010 then invert is 1101, then dec to 1100, invert to 0011 and show in pins 
+import rp2
+from time import sleep
+from machine import Pin
+@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def pioProg():
+    set(y,0b1111)
+    wrap_target()
+    label('readAgain')
+    # mov(osr,y) ## okay to have almost anywhere before it is first used. maintains active count
+    mov(isr,null)   
+    in_(pins,2)
+    nop()[31]
+    nop()[31]
+    mov(x,isr)
+    jmp(not_x,'readAgain')
+    mov(osr,y)
+    set(y,0b0001)
+    jmp(x_not_y,'checkBlue')
+    mov(y,osr)
+    # wait(1,pin,0)
+    nop()[31]
+    nop()[31]
+    # wait(0,pin,0)
+    ## note inverted y then decremented and then inverted again, and THEN moved the twice inverted y to pins!!!!!!!
+    mov(y,invert(y)) ## is y is 0010 then invert is 1101, then dec to 1100, invert to 0011 and show in pins 
     
-#     jmp(y_dec,'dec')
-#     label('dec')
-#     mov(y,invert(y))
-#     wait(0,pin,0)
-#     mov(pins,y)
-#     jmp('readAgain')
+    jmp(y_dec,'dec')
+    label('dec')
+    mov(y,invert(y))
+    wait(0,pin,0)
+    mov(pins,y)
+    jmp('readAgain')
     
     
     
-#     label('checkBlue')
-#     set(y,0b0010)
-#     jmp(x_not_y,'readAgain')
-#     mov(y,osr)
-#     jmp(y_dec,'next')
-#     label('next')
-#     # wait(1,pin,1)
-#     nop()[31]
-#     nop()[31]
-#     wait(0,pin,1)
-#     mov(pins,y)
-#     wrap()
-# blue15=Pin(15,Pin.IN,Pin.PULL_DOWN)
-# red14=Pin(14,Pin.IN,Pin.PULL_DOWN)    
-# sm1=rp2.StateMachine(0,pioProg,in_base=Pin(14),freq=2000,out_base=Pin(16,Pin.OUT))
-# sm1.active(1)
-# while True:
-#     pass
+    label('checkBlue')
+    set(y,0b0010)
+    jmp(x_not_y,'readAgain')
+    mov(y,osr)
+    jmp(y_dec,'next')
+    label('next')
+    # wait(1,pin,1)
+    nop()[31]
+    nop()[31]
+    wait(0,pin,1)
+    mov(pins,y)
+    wrap()
+blue15=Pin(15,Pin.IN,Pin.PULL_DOWN)
+red14=Pin(14,Pin.IN,Pin.PULL_DOWN)    
+sm1=rp2.StateMachine(0,pioProg,in_base=Pin(14),freq=2000,out_base=Pin(16,Pin.OUT))
+sm1.active(1)
+while True:
+    pass
 ########~~~~~~~

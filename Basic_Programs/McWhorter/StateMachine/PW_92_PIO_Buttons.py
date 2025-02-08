@@ -1,4 +1,4 @@
-''' Works in thonny not vs code always
+''' 
 lesson 92 PW
 https://www.youtube.com/watch?v=ob80LODRleo
 
@@ -14,41 +14,39 @@ another option not as great in potential is:
     nop() [31]
     jmp(y_dec,'delay')
 '''
-###this is from lesson 91 with slowing of the binary counter
-'''
-import rp2
-import time
-from machine import Pin
-## decorator
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-def pioProg():
-    #set(x,0b1111)
-    wrap_target()
-    set(x,0b1111)
-    label('bitLoop')
-    mov(pins,invert(x))[31]## invert is count up, not invert is countdown witht he dec_ function
-    nop()[31]
-    set(y,0b11111)[31]
-    #set(y,0b1111)[31]  ## note that for this inside loop to use the set value, it must be inside the outer loop!!!
-    
-    mov(isr,y)
-    in_(y,2)
-    in_(y,2)
-    mov(y,isr)
-    nop()[31]
-    nop()[31]
-    label('delay')
-    nop() [31]
-    jmp(y_dec,'delay')
-    nop()[31]
-   
-    jmp(x_dec,'bitLoop')[31]
-    wrap()
-    
-    
-sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10million  precision of o.1 micrixseconds
-sm0.active(1)
-'''
+###this is from lesson 91 with slowing of the binary counter. with the invert(x) it is count down
+
+# import rp2
+# import time
+# from machine import Pin
+# ## decorator
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# def pioProg():
+#     #set(x,0b1111)
+#     wrap_target()
+#     set(x,0b1111)
+#     label('bitLoop')
+#     mov(pins,invert(x))[31]## invert is count up, not invert is countdown witht he dec_ function
+#     nop()[31]
+#     set(y,0b1111)[31]  ## note that for this inside loop to use the set value, it must be inside the outer loop!!!  
+#     mov(isr,y)
+#     in_(y,1)
+#     # in_(y,2)
+#     mov(y,isr)
+#     nop()[31]
+#     nop()[31]
+#     label('delay')
+#     nop() [31]
+#     jmp(y_dec,'delay')
+#     nop()[31]  
+#     jmp(x_dec,'bitLoop')[31]
+#     wrap()
+       
+# sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10million  precision of o.1 micrixseconds
+# sm0.active(1)
+# while True:
+#     pass
+
 ## lesson 92 simple toggle switch minute 13
 ## this is basic and just turns the leds on with the button press
 # import rp2
@@ -100,8 +98,10 @@ sm0.active(1)
 # import rp2
 # import time
 # from machine import Pin
-# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*6,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*5,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 # def wait_pin_low():
+#     set(x,0b00000)
+#     mov(pins,x)
 #     wrap_target()
 #     set(x,0b11111)
 #     label('bitLoop')
@@ -168,6 +168,8 @@ def pioProg():
     wrap()
 sm0=rp2.StateMachine(0,pioProg,freq=2000,out_base=Pin(16))###	if made freq 10million  precision of o.1 micrixseconds
 sm0.active(1)
+while True:
+    pass
 '''
 ### minute 37-40 of lesson 90 multiplying and adding  at minute 40 says cab add 2 or 3
 

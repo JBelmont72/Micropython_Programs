@@ -14,7 +14,7 @@ PW lesson 84 Pico button debouncing, works fine
 # gLed=Pin(gPin,Pin.OUT)
 # bLed=Pin(bPin,Pin.OUT)
 # press=0     ## # if tune bu
-# tUp=time.ticks_ms() ## tinme button from 1 to zero, when the button comes up (though the value goes to zero)
+# tUp=time.ticks_ms() ## time button from 1 to zero, when the button comes up (though the value goes to zero)
 # tDown=time.ticks_ms() ### time button  down. is when the button is pushed down(and becomes zero)   the t Diff will be the time between the button coming up minus time down
 # ## the real tDown when value goes to one from zero afgter a long intgerval of time.
 # ## thus want tDown - tUP  to be greater than what we want as a debounee time ( maybe 25 ms)
@@ -46,7 +46,7 @@ PW lesson 84 Pico button debouncing, works fine
 #             print(i)
 #             if i %2 ==0:
 #                 gLed.toggle()
-#         time.sleep(.4)           
+#         time.sleep(1.5)           
 
 
 # except KeyboardInterrupt:
@@ -59,7 +59,7 @@ PW lesson 84 Pico button debouncing, works fine
 # next i can try to include a timer to turn on another led (r Led)or a buzzer etc
 from machine import Pin,Timer
 import time
-butPin=0
+butPin=15
 butPin2=14
 gPin=17
 rPin=16
@@ -70,28 +70,31 @@ rLed=Pin(rPin,Pin.OUT)
 gLed=Pin(gPin,Pin.OUT)
 bLed=Pin(bPin,Pin.OUT)
 butStateOld=0
-debounceTime=25
 tUp=time.ticks_ms()
 tDown=time.ticks_ms()
+press =0
 def button_press(pin):
-    butState=watchButton.value()
-    global butStateOld,tUp,tDown
-    if butState==0:
-        tUp=time.ticks_ms()
+    global butStateOld,tUp,tDown,press
+    butState=Button.value()
+    # tDown=time.ticks_ms() ##works same with or without this
     if butState==1:
         tDown=time.ticks_ms()
-    tDiff=tDown-tUp
-    if butStateOld==0 and butState==1 and tDiff>300:
+    if butState==0:
+        tUp=time.ticks_ms()
+    
+    if  butState==1 and butStateOld==0 and (tDown-tUp>25):
+        press+=1
         gLed.toggle()
         print('Hi')
-        for i in range(10):
-            rLed.toggle()
-            time.sleep(.2)
+        print('TRIGGER: ',press)
+        # for i in range(10):
+        #     rLed.toggle()
+        #     time.sleep(.2)
         
     butStateOld=butState
 
 
-watchButton.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING,handler =button_press)
+Button.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING,handler =button_press)
 
 try:
     while True:
@@ -101,7 +104,7 @@ try:
             time.sleep(.3)
             if i %2 ==0:
                 bLed.toggle()
-        time.sleep(.4)           
+        time.sleep(1.4)           
 
 
 except KeyboardInterrupt:

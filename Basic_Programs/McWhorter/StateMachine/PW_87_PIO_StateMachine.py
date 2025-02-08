@@ -4,33 +4,35 @@ assembly language
 lowest freq can run the state machine is 2000 commands per second, can run at 10 million cycles per second, lowest is 2000 operations per second ,  1/2 of a millisecond
 can run at 10 million cycles per secopnd
 '''
-## this program set the pins (4 in this case )were initialized and set to 0 or 1
+## this program is a count down binary counter_  the reference lesson is number 91
 # import time
 # from machine import Pin
 # import rp2   ## the   @ is  'decorator' and alerts that we are programming the state machine
-# @rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,)*4, out_shiftdir=rp2.PIO.SHIFT_RIGHT)  # defines the number of GPIO pins to use,
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*5, out_shiftdir=rp2.PIO.SHIFT_RIGHT)  # defines the number of GPIO pins to use,
 # # @rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,)*4)  # defines the number of GPIO pins to use,(THis worked as well)
 # def pioProg():
-#     set(pins,0b1011)
-#     # set(pins,(0b0011 + 0b0001))
-#     # set(pins,0xA)
-#     # set(pins,15)
+#     wrap_target()
+#     set(x,0b1111)
+#     label('bitLoop')
+#     set(y,0b11111)
+#     # mov(x,invert(x))
+#     mov(pins,x)
+#     mov(isr,y)
+#     in_(y,2)
+#     mov(y,isr)
+#     label('loop')
+#     nop()
+#     jmp(y_dec,'loop')
+#     jmp(x_dec,'bitLoop')
+#     wrap()
   
 
-    
-
 # ### sm0 is instantiating the satemenachine object, using SM 0 put can go all the way to SM 7    
-# sm0 = rp2.StateMachine(0, pioProg,freq=2000, set_base=Pin(16))
+# sm0 = rp2.StateMachine(0, pioProg,freq=2000, out_base=Pin(16))
+# sm0.active(1)
 # try:
 #     while True:
-#         for i in range(5):
-#             # sm0.put(i)
-#             # a=sm0.get()
-#             time.sleep(.5)
-#             print(i) 
-#         sm0.active(1)
-#         time.sleep(2)
-#         sm0.active(0)
+#       pass
 # except KeyboardInterrupt:
 #     sm0.active(0)
 #     print('All Done')
@@ -93,9 +95,9 @@ from machine import Pin
 import rp2   ## the   @ is  'decorator' and alerts that we are programming the state machine
 ### Note that I have changed the 'set' to 'out'.  below is the 'decorator'
 
-ledPin=13
-Led=Pin(13,Pin.OUT)
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*5, out_shiftdir=rp2.PIO.SHIFT_RIGHT)  # defines the number of GPIO pins to use,
+ledPin=19
+Led=Pin(19,Pin.OUT)
+@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*3, out_shiftdir=rp2.PIO.SHIFT_RIGHT)  # defines the number of GPIO pins to use,
 ## want to pull data into the OSR of the stateMachine!! below
 def pioProg():          ## note the pull() and push() to move data in and out of the FIFO to and from the stateMachine. Note that the original data was placed into the FIFO TX by the put() and then processed data the end & retrieved by the  get() function
     wrap_target()           ### not setting a value in the program and will start with wrap

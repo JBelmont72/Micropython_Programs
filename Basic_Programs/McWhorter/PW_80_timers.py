@@ -350,20 +350,22 @@ tDown=time.ticks_ms
 butStateOld=0
 def Binary(pin):
     global press , butStateOld, tUP, tDown
-    tUP=time.ticks_ms
+    # tUP=time.ticks_ms()
     butState=Button.value()
     if butState==1:
         tDown=time.ticks_ms()
     if butState==0:
         tUp=time.ticks_ms()
-    if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)<25) :
+    # if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)<25):
+    if butState==1 and butStateOld==0 and (time.ticks_diff(tUP,tDown)>25):
+
     # if butState==1 and butStateOld==0:
         press +=1
         print('TRIGGER: ',press)
-        tDelta=time.ticks_diff(tDown,tUP)
+        tDelta=time.ticks_diff(tUP,tDown)
         print(tDelta)
         rLed.toggle()
-        if press>16:
+        if press>15:
             press =press-16
         if press%2==0:
             gLed.toggle()
@@ -373,7 +375,7 @@ def Binary(pin):
             yLed.toggle()
     # tDown=tUP
     # tUp=tDown   
-    butStateOld=0
+    butStateOld=butState
     
     
 Button.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING ,handler=Binary)  ## i got around using Pin.IRQ_Falling by resetting the butStateOld to 0 

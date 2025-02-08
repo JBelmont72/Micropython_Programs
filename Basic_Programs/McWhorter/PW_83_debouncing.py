@@ -53,22 +53,25 @@ def debounce_callback(pin):
 from machine import Pin,Timer
 import time
 butPin=15
-rPin=17
-gPin=16
-bPin=19
+gPin=17
+rPin=16
+bPin=18
+yPin=19
 Button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
 rLed=Pin(rPin,Pin.OUT)
 gLed=Pin(gPin,Pin.OUT)
 bLed=Pin(bPin,Pin.OUT)
+yLed=Pin(yPin,Pin.OUT)
 x=0
 press=0
-downTime=0
-# upTime=time.ticks_ms()
+downTime=time.ticks_ms()
+upTime=time.ticks_ms()
 OldButState=0
 def button_pressed(pin):
     global press,upTime,downTime,OldButState
-    NewButState=Button.value()
+    ButState=Button.value()
     # upTime=time.ticks_ms()
+    
     # if NewButState==1:##Pressed, record the time the button was pressed 
     #     downTime=time.ticks_us()
     # if OldButState==0:
@@ -86,28 +89,34 @@ def button_pressed(pin):
     # # upTime=downTime
     # OldButState=NewButState
     # downTime=time.ticks_us()
-    if NewButState==1:##Pressed, record the time the button was pressed 
-        downTime=time.ticks_us()
-    if OldButState==0:
-        upTime=time.ticks_us()  
-    if NewButState==1 and OldButState==0 and (time.ticks_diff(downTime,upTime)<(20)):
+    
+    if ButState==1:##Pressed, record the time the button was pressed 
+        downTime=time.ticks_ms()
+    
+    
+    if ButState==0:
+        upTime=time.ticks_ms() 
+    # if ButState==1:##Pressed, record the time the button was pressed 
+    #     downTime=time.ticks_ms()  
+    if ButState==1 and OldButState==0 and (time.ticks_diff(downTime,upTime)>25):
+    # if ButState==1 and OldButState==0 and (downTime-upTime<25):
     # if NewButState==1 and OldButState==0 :
         time_diff=time.ticks_diff(downTime,upTime)
-        print(time_diff)
-        print(f'{downTime}  {upTime}')
-        
-        OldButState=NewButState
+        print('time_diff',time_diff)
+        print(f'{downTime}   time  {upTime}')
+        press+=1
         if press>16:
             press =press-16
         if press%2==0:
-            bLed.toggle()
-        if press%4==0:
             gLed.toggle()
+        if press%4==0:
+            bLed.toggle()
+        if press%8==0:
+            yLed.toggle()
         rLed.toggle()
-        print('Trigger: ',press)
-        press +=1    
+        print('Trigger: ',press)    
     # upTime=downTime
-    OldButState=0
+    OldButState=ButState
     # print("old but state ",OldButState)
     
     

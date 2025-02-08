@@ -140,38 +140,38 @@ x is pulse width, move to osr,   perIod to isr
 # sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
 # sm0.active(1)
 #####5 jan 2024 take above and make it take commands frompython
-import rp2
-from machine import Pin
-import time
-@rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,), out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-def Servo():
-    wrap_target()
-    mov(y,isr)
-    mov(x,osr)
-    set(pins,0)
-    label('decr_Y')
-    jmp(x_not_y,'loop')
-    set(pins,1)
-    label('loop')
-    jmp(y_dec,'decr_Y')
-    wrap()
-sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
-sm0.active(1)
-sm0.put(20000)
-sm0.exec('pull()')
-sm0.exec('mov(isr,osr)')
+# import rp2
+# from machine import Pin
+# import time
+# @rp2.asm_pio(set_init=(rp2.PIO.OUT_LOW,), out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# def Servo():
+#     wrap_target()
+#     mov(y,isr)
+#     mov(x,osr)
+#     set(pins,0)
+#     label('decr_Y')
+#     jmp(x_not_y,'loop')
+#     set(pins,1)
+#     label('loop')
+#     jmp(y_dec,'decr_Y')
+#     wrap()
+# sm0=rp2.StateMachine(0,Servo,freq=2000000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),set_base=Pin(0,Pin.OUT))
+# sm0.active(1)
+# sm0.put(20000)
+# sm0.exec('pull()')
+# sm0.exec('mov(isr,osr)')
 
 
-while True:
-    for angle in range(0,180,1):
-        pw=int(500+angle*2000/180)
-        sm0.put(pw)
-        sm0.exec('pull()')
-    time.sleep(1)
-    for angle in range(180,0,-1):
-        pw=int(500+angle*(2000/180))
-        sm0.put(pw)
-        sm0.exec('pull()')
+# while True:
+#     for angle in range(0,180,1):
+#         pw=int(500+angle*2000/180)
+#         sm0.put(pw)
+#         sm0.exec('pull()')
+#     time.sleep(1)
+#     for angle in range(180,0,-1):
+#         pw=int(500+angle*(2000/180))
+#         sm0.put(pw)
+#         sm0.exec('pull()')
         
 ######make a servo class
 # import rp2
@@ -216,6 +216,54 @@ while True:
 #     for angle in range(180,0,-1):
 #         myServo.ServoAngle(angle)
 ####~~~~~~~~~~~~~       
+'''20,000 is 0,10011,10001,00000
+1,500 is 01,01110,11100
+2500 is 010,01110,00100
+500   is  ,01111,10100  '''
+import rp2
+from machine import Pin
+import time
+@rp2.asm_pio(set_init=rp2.PIO.OUT_LOW,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def servo():
+      ##the pulse width for 1500 90 deg is in x
+    
+    
+    set(x,0b01)
+    in_(x,2)
+    set(x,0b01110)
+    in_(x,5)
+    set(x,0b11100)  ##the pulse width for 1500 90 deg is in x
+    in_(x,5)
+    mov(x,isr) ## the pulse width is in ISR
+    mov(osr,x) ## the pulse width is also stored in OSR( not needed for this version))
+    mov(isr,null)
+      
+    
+    set(y,10011)
+    in_(y,5)
+    set(y,0b10001)
+    in_(y,5)
+    set(y,0b00000)
+    in_(y,5) 
+    wrap_target()
+    mov(y,isr)  ## the period is in y and ISR
+    mov(x,osr)
+    set(pins,0)
+    label('loop')
+    jmp(x_not_y,'ON')
+    set(pins,1)
+    label("ON")
+    jmp(y_dec,'loop')
 
-        
-  
+     
+    ## goes to here when y is decreased down to x (the pulsewidth) 
+    
+    wrap()
+servoPin=Pin(0,Pin.OUT)
+sm0=rp2.StateMachine(0,servo,2000000,set_base=Pin(0,Pin.OUT))
+sm0.active(1)
+x=0
+while True:
+    print(x)
+    x+=1
+    time.sleep(1)
