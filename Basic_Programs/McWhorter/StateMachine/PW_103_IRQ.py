@@ -9,27 +9,53 @@ a SM using a IRQ can trigger interrupts on other statemachines or in Python
 # import rp2
 # from machine import Pin
 # import time
+# import sys
 # ##recap pioprog from PW_87
-# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*3,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 # def pioProg():
-#     # set(x,0b111111)## not used in the sm0.exec(put(value))
+#     # wrap_target()
+#     set(x,0b111111)## not used in the sm0.exec(put(value))
 #     wrap_target()  ## if the wrap target is here, then the osr is reloaded each time trhough the cycle
 #     # mov(osr,x)      ### moves x to osr ## i found that i could comment this out, i think I'm just skipping loading the OSR
 #     # wrap_target()## if the wrap_target is left here. the osr is loaded with x only one time!! it flashes the first time throughthe loop
-#     mov(x,osr)
-#     # set(x,0b0000) # if i uncommnet this , the x is reset and the leds turn off
-#     mov(pins,x)   
-#     # out(pins,6)     ### out clears the osr and put the osr value to pins with an out, the osr is now empty, so this is a loop because the osr keeps getting freshly reloaed with  the value in x, the number is how many pins to be used
-#     wrap()
+#     # mov(x,osr)
+#     mov(pins,x)
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
     
+    
+#     mov(pins,invert(x))   
+#     # out(pins,6)     ### out clears the osr and put the osr value to pins with an out, the osr is now empty, so this is a loop because the osr keeps getting freshly reloaed with  the value in x, the number is how many pins to be used
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+    
+    
+#     wrap()
+# led=Pin(16,Pin.OUT)   
 # sm0=rp2.StateMachine(0,pioProg,freq =2000,out_base=Pin(16,Pin.OUT))
 # sm0.active(1)
 # sm0.put(0b1111)
 # sm0.exec('pull()')
 
-
-# while True:
-#     pass
+# try:
+#     while True:
+#         pass
+# except:
+#     sm0.active(0)
+#     print('Off')
+# finally:
+#     sys.exit
 ####
 '''
 ## set up an interrupt when the button pressed which will toggle the led
@@ -161,42 +187,45 @@ while True:
 # while True:
 #     pass 
 ###~~~~~~~~7 Feb 2025 same as above , i tried adding  the out_init, outShift in the decorator and the out_base pins in the state machine instantiator
-import rp2 
-from machine import Pin
-import time
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*3,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# import rp2 
+# from machine import Pin
+# import time
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*3,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
 
 
-def But_irq():
+# def But_irq():
 
-    wrap_target()
-    wait(0,pin,0)
+#     wrap_target()
+#     wait(0,pin,0)
     
-    set(y,0b111)
-    mov(pins,y)
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    irq(block, 0)
-    wait(1,pin,0)## the pin is instantiates and can call the irq method in 'smButton.irq( trigger is the  and the handler is the 'button_handler ()' function
+#     set(y,0b111)
+#     mov(pins,y)
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     nop()[31]
+#     irq(block, 0)
+#     wait(1,pin,0)## the pin is instantiates and can call the irq method in 'smButton.irq( trigger is the  and the handler is the 'button_handler ()' function
     
-    nop()[31]
-    nop()[31]
-    mov(pins,invert(y))
-    nop()[31]
-    nop()[31]
-    wrap()
+#     nop()[31]
+#     nop()[31]
+#     mov(pins,invert(y))
+#     nop()[31]
+#     nop()[31]
+#     wrap()
     
-Button=Pin(14,Pin.IN,Pin.PULL_DOWN)
-smButton=rp2.StateMachine(0,But_irq,freq=2000,in_base=Button,out_base=Pin(17,Pin.OUT))## creates an instance of Statemachine the instantiates the 'pin' in the Satemachine program (But_irq)
-smButton.active(1)
-led_pin= Pin(16,Pin.OUT)
+# Button=Pin(14,Pin.IN,Pin.PULL_DOWN)
+# smButton=rp2.StateMachine(0,But_irq,freq=2000,in_base=Button,out_base=Pin(17,Pin.OUT))## creates an instance of Statemachine the instantiates the 'pin' in the Satemachine program (But_irq)
+# smButton.active(1)
+# led_pin= Pin(16,Pin.OUT)
 
-def button_handler(pin):
-    led_pin.value(not led_pin.value())
-    print(time.ticks_ms())
-smButton.irq(button_handler)    #when the interrupt occurs in  the SM program, it will alert/trigger the smButton.irq interrupt, then the handler is called which is the button_handler and toggles the led
-# smButton.irq(lambda p: print(time.ticks_ms()))
-while True:
-    pass
+# def button_handler(pin):
+#     led_pin.value(not led_pin.value())
+#     print(time.ticks_ms())
+# smButton.irq(button_handler)    #when the interrupt occurs in  the SM program, it will alert/trigger the smButton.irq interrupt, then the handler is called which is the button_handler and toggles the led
+# # smButton.irq(lambda p: print(time.ticks_ms()))
+# while True:
+#     pass
+
+###~~~~~~~~~~~~~~~~9 feb 2025 three buttons and 3 interrupts
+

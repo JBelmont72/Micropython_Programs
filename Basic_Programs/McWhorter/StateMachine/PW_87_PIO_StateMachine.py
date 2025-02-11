@@ -27,7 +27,7 @@ can run at 10 million cycles per secopnd
 #     wrap()
   
 
-# ### sm0 is instantiating the satemenachine object, using SM 0 put can go all the way to SM 7    
+# ### sm0 is instantiating the State Machine object, using SM 0 put can go all the way to SM 7    
 # sm0 = rp2.StateMachine(0, pioProg,freq=2000, out_base=Pin(16))
 # sm0.active(1)
 # try:
