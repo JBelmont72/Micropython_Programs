@@ -7,21 +7,25 @@ import network
 import urequests
 import time
 from time import sleep
-import bme280
+import BME280
 #import constants
 
 
-sdaPINbme=Pin(14)
-sclPINbme=Pin(15)
-i2c=machine.I2C(1,sda=sdaPINbme, scl=sclPINbme, freq=400000)
-bme = bme280.BME280(i2c=i2c)
-
+sdaPINbme=Pin(0)
+sclPINbme=Pin(1)
+i2c=I2C(0,sda=sdaPINbme, scl=sclPINbme, freq=400000)
+# bme = BME280(i2c=i2c)
+bme = BME280.BME280(i2c=i2c, addr=0x76)
 
 ##i2c = I2C(1, sda=Pin(14), scl=Pin(15), freq=400000) 
-ssid='NETGEAR48'
-password = 'waterypanda901'
+# ssid='NETGEAR48'
+# ssid='NETGEAR48_2.4_Loft'
+# password = 'waterypanda901'
 # ssid = constants.INTERNET_NAME
 # password = constants.INTERNET_PASSWORD
+ssid = 'SpectrumSetup-41'
+password = 'leastdinner914'
+
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(ssid, password)
@@ -62,7 +66,14 @@ base_url = 'https://api.thingspeak.com/update'
 while True:
     # temperature, pressure, humidity = read_sensor()
     
-    t,p,h = bme.read_compensated_data()
+    t = bme.temperature
+    h = bme.humidity
+    p = bme.pressure
+    print(t,h,p)
+    # temp_c = bme.temperature
+    # hum = bme.humidity
+    # pres = bme.pressure
+    # t,p,h = bme.read_compensated_data()
     temperature=float(t/100)
     # pressure= float(p)
     pressure= float(p // 100)
