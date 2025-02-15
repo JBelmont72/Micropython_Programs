@@ -26,14 +26,17 @@ from time import sleep
 
 class WiFi:
     def __init__(self):
-        self.ssid = self.password
+        self.ssid = secrets_Condo.ssid
+        #self.ssid = self.password
         # self.ssid = 'SpectrumSetup-41'
-        self.password = self.password
+        self.password = secrets_Condo.password
+        #self.password = self.password
         # self.password = 'leastdinner914'
     
     def ConnectWiFi(self):
         wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
+        #wlan.connect(Secrets_Condo.ssid,Secrets_Condo.password)
         wlan.connect(self.ssid, self.password)
         while wlan.isconnected() == False:
             print('Waiting for connection...')

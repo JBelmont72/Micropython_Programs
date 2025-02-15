@@ -1,10 +1,10 @@
-from PicoSensor import Temperature
+from BME_Class import BME_Temperature
 from WiFiNetwork import WiFi
 from Thingspeak import ThingSpeakApi
 from time import sleep
 
 #Sensor Initialization
-sensor = Temperature()
+sensor = BME_Temperature()
 
 #ThingSpeak Initialization
 field = 1
@@ -16,7 +16,7 @@ ip = network.ConnectWiFi()
 
 #Main Program
 while True:
-    temperature = sensor.ReadTemperature()
+    temperature,h,pres,temp_f = sensor.Read()
     print(f"T={temperature}°C")
     thingspeak.WriteData(temperature)
     sleep(20)

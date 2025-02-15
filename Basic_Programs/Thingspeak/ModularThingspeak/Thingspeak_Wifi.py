@@ -26,7 +26,7 @@ def ConnectWiFi():
 ## COnnect to internet
 ip=ConnectWiFi()
 print(ip)
-## thingspeak initialization
+## thingspeak initialization   
 THINGSPEAK_WRITE_API_KEY = 'YZRDGNJ7C9JZI3MP'
 server = 'http://api.thingspeak.com/'
 field = 1
@@ -37,4 +37,4 @@ while True:
     url=f"{server}/update?api_key={THINGSPEAK_WRITE_API_KEY}&{field}={temperature}"
     request= urequests.post(url)
     request.close()
-    sleep(20)
+    sleep(2)
