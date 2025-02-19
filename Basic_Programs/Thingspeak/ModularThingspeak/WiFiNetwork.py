@@ -1,4 +1,5 @@
 '''
+Name WiFiNetwork.py 
 
 '''
 # import network
@@ -20,17 +21,18 @@
 
 
 import network
-import secrets_Condo
-
+import secrets_Loft
+# import secrets_Condo
 from time import sleep
-
 class WiFi:
     def __init__(self):
-        self.ssid = secrets_Condo.ssid
+        self.ssid = secrets_Loft.ssid
+        # self.ssid = 'NETGEAR48'
+        #self.ssid = self.password
         #self.ssid = self.password
         # self.ssid = 'SpectrumSetup-41'
-        self.password = secrets_Condo.password
-        #self.password = self.password
+        self.password = secrets_Loft.password
+        # self.password = 'waterypanda901'
         # self.password = 'leastdinner914'
     
     def ConnectWiFi(self):
@@ -38,14 +40,14 @@ class WiFi:
         wlan.active(True)
         #wlan.connect(Secrets_Condo.ssid,Secrets_Condo.password)
         wlan.connect(self.ssid, self.password)
+        sleep(1)
         while wlan.isconnected() == False:
             print('Waiting for connection...')
             sleep(1)
         ip = wlan.ifconfig()[0]
         print(f'Pico Connected on IP {ip}')
         return ip
-    
-    
+       
 def main():
     myWifi=WiFi()
     while True:

@@ -1,4 +1,5 @@
- 
+## BME_Class.py 
+
 import machine
 import urequests 
 from machine import Pin, SoftI2C
@@ -18,15 +19,20 @@ class BME_Temperature:
         #pres =self.bme.pressure
         # Read sensor data
         temp_c = self.bme.temperature
+        
         hum = self.bme.humidity
         pres = self.bme.pressure
-        print('Temperature: ', temp_c)
+        #print('Temperature: ', temp_c)
         # print('Temperature: ', temp_f)
-        print('Humidity: ', hum)
-        print('Pressure: ', pres)
-        temp=temp_c.split('C')
-        temp=float(temp[0])
-        temp_f = temp*(1.8) + 32
+        #print('Humidity: ', hum)
+        #print('Pressure: ', pres)
+        temp_c=temp_c.split('C')
+        temp_c=float(temp_c[0])
+        temp_f = temp_c*(1.8) + 32
+        hum=hum.split('%')
+        hum=float(hum[0])
+        pres=pres.split('hPa')
+        pres=float(pres[0])
         return temp_c,hum,pres,temp_f
 
 
@@ -129,4 +135,3 @@ while True:
 
 #     sleep(5)
 '''
- 
