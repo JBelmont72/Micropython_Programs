@@ -2,6 +2,9 @@
 https://github.com/rsc1975/micropython-hcsr04
 https://randomnerdtutorials.com/micropython-hc-sr04-ultrasonic-esp32-esp8266/
 
+data sheet https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf
+
+this shows usiong a voltage divider for the echo pin https://pimylifeup.com/raspberry-pi-distance-sensor/
 '''
 from machine import Pin, time_pulse_us
 from utime import sleep_us
@@ -91,7 +94,7 @@ import time
 from machine import Pin, time_pulse_us
 from utime import sleep_us
 trigger_pin=16
-echo_pin=17
+echo_pin=14
 echo_timeout_us=500*2*30 ## can make longer distance up to about 1,000,000 microseconds
 trigger = Pin(trigger_pin, mode=Pin.OUT, pull=None)
 echo = Pin(echo_pin, mode=Pin.IN, pull=None)
