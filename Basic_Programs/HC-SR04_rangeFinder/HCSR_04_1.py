@@ -57,8 +57,8 @@ from machine import Pin, I2C
 import utime
 
 
-trig_pin = Pin(16, Pin.OUT)
-echo_pin = Pin(14, Pin.IN)
+trig_pin = Pin(1, Pin.OUT)
+echo_pin = Pin(0, Pin.IN)
 
 ## i took the below function and put it in the While True loop
 # def ultraSonic():

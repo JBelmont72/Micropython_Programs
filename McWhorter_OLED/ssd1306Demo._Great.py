@@ -1,5 +1,5 @@
  # Display Image & text on I2C driven ssd1306 OLED display
- 
+ Works fine 27 Feb 25
 '''
 have i2c scanner at bottom
 '''

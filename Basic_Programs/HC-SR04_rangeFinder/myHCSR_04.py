@@ -93,8 +93,8 @@ import time
 
 from machine import Pin, time_pulse_us
 from utime import sleep_us
-trigger_pin=16
-echo_pin=14
+trigger_pin=18
+echo_pin=19
 echo_timeout_us=500*2*30 ## can make longer distance up to about 1,000,000 microseconds
 trigger = Pin(trigger_pin, mode=Pin.OUT, pull=None)
 echo = Pin(echo_pin, mode=Pin.IN, pull=None)

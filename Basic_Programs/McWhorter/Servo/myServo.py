@@ -5,7 +5,7 @@ i am importing my SERVO library which i have on my pico
 #from SERVO import *
 import SERVO
 import time
-servoPin =16
+servoPin =0
 myNewServo=SERVO.Servo_Class(servoPin)
 #myNewServo=ServoClass(servoPin)
 

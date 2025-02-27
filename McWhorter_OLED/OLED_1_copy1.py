@@ -19,7 +19,7 @@ from machine import Pin,I2C
 from ssd1306 import SSD1306_I2C
 import time
 
-i2c = I2C(1,sda=Pin(2),scl = Pin(3),freq = 200000)
+i2c = I2C(1,sda=Pin(18),scl = Pin(19),freq = 200000)
 
 dsp=SSD1306_I2C(128,64,i2c, addr = 0x3d)
 # the ic2 is the created object

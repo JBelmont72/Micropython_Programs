@@ -6,7 +6,7 @@ from utime import sleep
 
 
 #You can choose any other combination of I2C pins
-i2c = I2C(1,scl=Pin(3), sda=Pin(2), freq = 400000)
+i2c = I2C(1,scl=Pin(19), sda=Pin(18), freq = 400000)
 
 oled_width = 128
 oled_height = 64
