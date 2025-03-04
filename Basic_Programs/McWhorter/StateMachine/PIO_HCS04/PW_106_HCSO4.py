@@ -7,8 +7,8 @@ d = rate x time
 import machine
 import time
  
-TRIG_PIN = 1
-ECHO_PIN = 0
+TRIG_PIN = 0
+ECHO_PIN = 1
  
 TRIG = machine.Pin(TRIG_PIN,machine.Pin.OUT)
 ECHO = machine.Pin(ECHO_PIN,machine.Pin.IN)

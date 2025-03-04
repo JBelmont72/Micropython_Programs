@@ -73,8 +73,8 @@ def pulse_program():
     wrap()
 
 # Pin setup
-triggerPin = Pin(1, Pin.OUT)
-echoPin = Pin(0, Pin.IN)
+triggerPin = Pin(0, Pin.OUT)
+echoPin = Pin(1, Pin.IN)
 
 # Initialize state machine
 sm = rp2.StateMachine(0, pulse_program, freq=1000000, set_base=triggerPin, in_base=echoPin)
