@@ -156,7 +156,7 @@ while True:
 
 
 '''
-### March3, 2025 with struct  Chat
+### March3, 2025 with struct  this works and uses the client .py that follows
 
 import network
 import usocket as socket
@@ -215,14 +215,45 @@ while True:
         greenLED.off()
         yellowLED.off()
         redLED.off()
-
     # Send response to client
     response = f"LED {color} executed"
     packed_response = struct.pack(f'{len(response)}s', response.encode())
     server_socket.sendto(packed_response, client_address)
     print(f'Sent data to {client_address}')
   
-###### the client side 
+###### the client side /Users/judsonbelmont/Documents/SharedFolders/Python/Python_Book_New/UDP/UDP_C_PW110.py
+## i would copy below onto a pico
+import socket
+import struct
+
+# Server details
+SERVER_IP = '192.168.1.27'  # Replace with your Pico W's IP address
+SERVER_PORT = 12345
+
+# Set up UDP client
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+while True:
+    command = input("Enter LED color (green, yellow, red, off): ").strip().lower()
+    
+    if command not in {"green", "yellow", "red", "off"}:
+        print("Invalid command. Please enter 'green', 'yellow', 'red', or 'off'.")
+        continue
+
+    # Pack the command and send it
+    packed_command = struct.pack(f'{len(command)}s', command.encode())
+    client_socket.sendto(packed_command, (SERVER_IP, SERVER_PORT))
+    
+    # Receive and unpack response from server
+    response, _ = client_socket.recvfrom(1024)
+    length = len(response)
+    unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
+    print("Server Response:", unpacked_response)
+
+
+
+## below would be the client if I needed a wifi conneciton
+
 # import network
 # import usocket as socket
 # import time
