@@ -5,7 +5,11 @@ cryptography==42.0.5
 ecdsa==0.18.0
 esptool==4.7.0
 intelhex==2.3.0
+paho-mqtt==2.1.0
 pycparser==2.21
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.16
+PyQt5-sip==12.17.0
 pyserial==3.5
 PyYAML==6.0.1
 reedsolo==1.7.0
