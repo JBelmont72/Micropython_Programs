@@ -1,4 +1,4 @@
-'''
+'''16 march 2025 works
 scrolling from random nerds
 On that function, we start by adding a padding to our message that consists of as many blank spaces as the number of columns (I2C_NUM_COLS) and a final space at the end. We do this to create a space from where to start scrolling.
 message = " " * I2C_NUM_COLS + message + " "
@@ -30,7 +30,7 @@ I2C_NUM_ROWS = 2
 I2C_NUM_COLS = 16
 
 # Initialize I2C and LCD objects
-i2c = SoftI2C(sda=Pin(0), scl=Pin(1), freq=400000)
+i2c = SoftI2C(sda=Pin(2), scl=Pin(3), freq=400000)
 lcd = I2cLcd(i2c, I2C_ADDR, I2C_NUM_ROWS, I2C_NUM_COLS)
 
 def scroll_message(message, delay=0.3):

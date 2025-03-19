@@ -12,8 +12,12 @@ import network
 import urequests
 import random
 from time import sleep
-ssid = 'SpectrumSetup-41'
-password = 'leastdinner914'
+# ssid = 'SpectrumSetup-41'
+# password = 'leastdinner914'
+ssid = 'NETGEAR48'
+password = 'waterypanda901'
+# ssid = 'SpectrumSetup-41'
+# password = 'leastdinner914'
 def ConnectWiFi():
     wlan=network.WLAN(network.STA_IF)
     wlan.active(True)

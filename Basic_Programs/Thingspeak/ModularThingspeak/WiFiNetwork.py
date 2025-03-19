@@ -21,18 +21,19 @@ Name WiFiNetwork.py
 
 
 import network
-import secrets_Loft
+import secrets
+# import secrets_Loft
 # import secrets_Condo
 from time import sleep
 class WiFi:
     def __init__(self):
-        self.ssid = secrets_Loft.ssid
-        # self.ssid = 'NETGEAR48'
+        # self.ssid = secrets_Loft.ssid
+        self.ssid = secrets.ssid_Home
         #self.ssid = self.password
         #self.ssid = self.password
         # self.ssid = 'SpectrumSetup-41'
-        self.password = secrets_Loft.password
-        # self.password = 'waterypanda901'
+        # self.password = secrets_Loft.password
+        self.password = secrets.password_Home
         # self.password = 'leastdinner914'
     
     def ConnectWiFi(self):

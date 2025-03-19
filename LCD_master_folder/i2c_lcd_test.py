@@ -2,7 +2,7 @@ from machine import I2C, Pin
 from time import sleep
 from pico_i2c_lcd import I2cLcd
 #i2c = I2C(0, sda=Pin(20), scl=Pin(21), freq=400000)
-i2c = I2C(1, sda=Pin(26), scl=Pin(27), freq=400000)
+i2c = I2C(1, sda=Pin(2), scl=Pin(3), freq=400000)
 #I2C_ADDR = i2c.scan()[0]
 I2C_ADDR = 0x27
 

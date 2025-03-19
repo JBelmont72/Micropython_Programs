@@ -12,7 +12,7 @@ while True:
 '''
 # Rui Santos & Sara Santos - Random Nerd Tutorials
 # Complete project details at https://RandomNerdTutorials.com/raspberry-pi-pico-i2c-lcd-display-micropython/
-
+## this attempt at class LCD had an attribute issue. WIll need to icorporate changes.
 from machine import Pin, SoftI2C,ADC
 from pico_i2c_lcd import I2cLcd
 from time import sleep
@@ -32,30 +32,41 @@ class LCD:
     def LCD_Method(self):
             self.lcd = I2cLcd(self.i2c, self.I2C_ADDR, self.I2C_NUM_ROWS, self.I2C_NUM_COLS)
             return self.lcd
-
-    def scroll_message(self,message, delay=0.3):
-        self.message=message
-        self.delay=delay
-    # Add spaces to the beginning of the message to make it appear from the right
-        self.message = " " * self.I2C_NUM_COLS + self.message + " "
-        # Scroll through the message
-        for i in range(len(self.message) - self.I2C_NUM_COLS + 1):
-            self.lcd.move_to(0, 0)
-            self.lcd.putstr(message[i:i + self.I2C_NUM_COLS])
+        ## Updated scroll message:
+    def scroll_message(self, lcd, message, delay=0.3):
+        message = " " * self.I2C_NUM_COLS + message + " "
+        for i in range(len(message) - self.I2C_NUM_COLS + 1):
+            lcd.move_to(0, 0)
+            lcd.putstr(message[i:i + self.I2C_NUM_COLS])
             sleep(delay)
+        ##the above corrects the below
+    # def scroll_message(self,message, delay=0.3):
+    #     self.message=message
+    #     self.delay=delay
+    # # Add spaces to the beginning of the message to make it appear from the right
+    #     self.message = " " * self.I2C_NUM_COLS + self.message + " "
+    #     # Scroll through the message
+    #     for i in range(len(self.message) - self.I2C_NUM_COLS + 1):
+    #         self.lcd.move_to(0, 0)
+    #         self.lcd.putstr(message[i:i + self.I2C_NUM_COLS])
+    #         sleep(delay)
 def main():
     try:
-        message_scrolling = "This is a scrolling message with more than 16 characters"
+        message_scrolling = "This is a scrolling message with more than 16 characters   "
         message1="My LCD Class"
-        myLcd=LCD(0,1)
+        myLcd=LCD(2,3)
         while True:        
-            # myLcd=LCD(0,1)
-            lcdInstance = myLcd.LCD_Method()
-            
-            print(lcdInstance.I2C_ADDR)
+###The I2cLcd class from pico_i2c_lcd does not have an attribute I2C_ADDR. This attribute is defined in your LCD class, but when you call:
+            lcdInstance = myLcd.LCD_Method()    ##  You get an instance of I2cLcd, not your LCD class.
+###     To fix this, you should access I2C_ADDR from the myLcd instance instead of lcdInstance:
+            # print(lcdInstance.I2C_ADDR)   ## wrong
+            print(myLcd.I2C_ADDR)       ##note the difference 
+
             lcdInstance.blink_cursor_on()
-            addr=lcdInstance.I2C_ADDR
-            lcdInstance.putstr("I2C Address:"+str(addr)+"\n")
+            addr=myLcd.I2C_ADDR
+            lcdInstance.putstr("I2C Address:" + str(myLcd.I2C_ADDR) + "\n")## the updated putstr()
+
+            # ###lcdInstance.putstr("I2C Address:"+str(addr)+"\n")##
             sleep(1)
             lcdInstance.clear()
             
@@ -68,7 +79,8 @@ def main():
             lcdInstance.putstr(message1)
             sleep(2)
             lcdInstance.clear()
-            myLcd.scroll_message("This is a scrolling message with more than 16 characters",.3)
+            # myLcd.scroll_message("This is a scrolling message with more than 16 characters",.3)
+            myLcd.scroll_message(lcdInstance, "This is a scrolling message with more than 16 characters", .3)
 
 
     except KeyboardInterrupt:
@@ -80,7 +92,54 @@ def main():
 if __name__== '__main__':
     main()
 else:
-    print('''
+    print('''   ''')
+'''  
+THe above program had these errors:
+The error message AttributeError: 'I2cLcd' object has no attribute 'I2C_ADDR' is caused by this line in your main() function:
+
+print(lcdInstance.I2C_ADDR)
+Issue:
+The I2cLcd class from pico_i2c_lcd does not have an attribute I2C_ADDR. This attribute is defined in your LCD class, but when you call:
+
+lcdInstance = myLcd.LCD_Method()
+You get an instance of I2cLcd, not your LCD class.
+
+Solution:
+To fix this, you should access I2C_ADDR from the myLcd instance instead of lcdInstance:
+
+
+print(myLcd.I2C_ADDR)
+Also, update the putstr line accordingly:
+
+
+lcdInstance.putstr("I2C Address:" + str(myLcd.I2C_ADDR) + "\n")
+Another Issue: scroll_message Not Using lcd
+Your scroll_message method references self.lcd but never initializes self.lcd. Instead, you should pass lcdInstance to scroll_message, like this:
+
+Updated scroll_message method:
+
+
+def scroll_message(self, lcd, message, delay=0.3):
+    message = " " * self.I2C_NUM_COLS + message + " "
+    for i in range(len(message) - self.I2C_NUM_COLS + 1):
+        lcd.move_to(0, 0)
+        lcd.putstr(message[i:i + self.I2C_NUM_COLS])
+        sleep(delay)
+Call scroll_message Correctly in main():
+
+myLcd.scroll_message(lcdInstance, "This is a scrolling message with more than 16 characters", .3)
+Final Fixes:
+Replace print(lcdInstance.I2C_ADDR) → print(myLcd.I2C_ADDR)
+Replace lcdInstance.putstr("I2C Address:"+str(addr)+"\n") → lcdInstance.putstr("I2C Address:"+str(myLcd.I2C_ADDR)+"\n")
+Update scroll_message to accept lcdInstance as a parameter and pass it correctly in main()
+After these changes, your program should run without the AttributeError.
+
+
+
+
+
+
+ 
           https://randomnerdtutorials.com/raspberry-pi-pico-i2c-lcd-display-micropython/
           https://maxpromer.github.io/LCD-Character-Creator
           from machine import Pin, SoftI2C,ADC
@@ -91,7 +150,7 @@ class LCD(sda pin,scl pin0
 LCD_METHOD()
 Scroll_message(message,delay=0.3)
 
-''')
+'''
     ### https://randomnerdtutorials.com/raspberry-pi-pico-i2c-lcd-display-micropython/
 
 # # Create custom characters here: https://maxpromer.github.io/LCD-Character-Creator/

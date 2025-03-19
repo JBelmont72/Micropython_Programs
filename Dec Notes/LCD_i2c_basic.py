@@ -38,10 +38,10 @@ i2c = SoftI2C(scl=Pin(22), sda=Pin(21), freq=10000)     #initializing the I2C me
 
 lcd = I2cLcd(i2c, I2C_ADDR, totalRows, totalColumns)
 '''
-This line is used to initialize the I2C connection for the library by creating an object ‘lcd’.
-The first argument to the function I2cLcd() is the i2c object declared previously,
-the second argument is the address of our I2C LCD.
-Third and fourth arguments are the size in terms of the number of columns and number of rows.
+# This line is used to initialize the I2C connection for the library by creating an object ‘lcd’.
+# The first argument to the function I2cLcd() is the i2c object declared previously,
+# the second argument is the address of our I2C LCD.
+# Third and fourth arguments are the size in terms of the number of columns and number of rows.
 
 '''
 while True:
@@ -56,7 +56,8 @@ while True:
         sleep(1)
         lcd.clear()
         
-''' to display cusom characters
+''' 
+###to display cusom characters
 import machine
 from machine import SoftI2C, Pin
 from lcd_api import LcdApi
@@ -66,7 +67,7 @@ I2C_ADDR = 0x27
 totalRows = 2
 totalColumns = 16
 
-i2c = SoftI2C(scl=Pin(22), sda=Pin(21), freq=10000)     #initializing the I2C method for ESP32
+i2c = SoftI2C(scl=Pin(3), sda=Pin(2), freq=10000)     #initializing the I2C method for ESP32
 #i2c = I2C(scl=Pin(5), sda=Pin(4), freq=10000)       #initializing the I2C method for ESP8266
 
 lcd = I2cLcd(i2c, I2C_ADDR, totalRows, totalColumns)
@@ -80,36 +81,36 @@ lcd.putstr(chr(0)+" ESP32 with I2C LCD "+chr(1))
 '''
   
 ''' 
-S= bytearray = ([
-  0x04,
-  0x0A,
-  0x11,
-  0x08,
-  0x04,
-  0x12,
-  0x09,
-  0x06
-])
+# S= bytearray = ([
+#   0x04,
+#   0x0A,
+#   0x11,
+#   0x08,
+#   0x04,
+#   0x12,
+#   0x09,
+#   0x06
+# ])
 
-A  = bytearray([
-  0x04,
-  0x0E,
-  0x1B,
-  0x11,
-  0x1F,
-  0x11,
-  0x11,
-  0x11
-])
-M = bytearray ([
- 0x11,
-  0x1B,
-  0x1F,
-  0x15,
-  0x11,
-  0x11,
-  0x11,
-  0x11 
-])
+# A  = bytearray([
+#   0x04,
+#   0x0E,
+#   0x1B,
+#   0x11,
+#   0x1F,
+#   0x11,
+#   0x11,
+#   0x11
+# ])
+# M = bytearray ([
+#  0x11,
+#   0x1B,
+#   0x1F,
+#   0x15,
+#   0x11,
+#   0x11,
+#   0x11,
+#   0x11 
+# ])
 
-'''      
+    
