@@ -49,7 +49,7 @@ def debounce_callback(pin):
 #     gLed.value(0)
 #     bLed.value(0)
 #######~~~~~~~~
-####does not work  this is from the Random Nerds interupt/tiomer lesson section p 160
+####does  work  this is from the Random Nerds interupt/tiomer lesson section p 160
 from machine import Pin,Timer
 import time
 butPin=15

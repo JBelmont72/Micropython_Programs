@@ -325,68 +325,111 @@
 #     yLed.value(0)
 ##############binary counter using a push button and interrupts program 6
 
-import time
-from machine import Pin,Timer
-rPin=16
-gPin=17
-bPin=18
-yPin=19
-butPin=15
+# import time
+# from machine import Pin,Timer
+# rPin=16
+# gPin=17
+# bPin=18
+# yPin=19
+# butPin=15
+# rLed=Pin(rPin,Pin.OUT)
+# gLed=Pin(gPin,Pin.OUT)
+# bLed=Pin(bPin,Pin.OUT)
+# yLed=Pin(yPin,Pin.OUT)
+# Button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
+
+    
+# rLed.off()
+# gLed.off()
+# bLed.off()
+# yLed.off()
+# press=0
+# tUP=time.ticks_ms
+# tDown=time.ticks_ms
+# # tDelta=time.ticks_diff(tDown,tUP)
+# butStateOld=0
+# def Binary(pin):
+#     global press , butStateOld, tUP, tDown
+#     # tUP=time.ticks_ms()
+#     butState=Button.value()
+#     if butState==1:
+#         tDown=time.ticks_ms()
+#     if butState==0:
+#         tUp=time.ticks_ms()
+#     # if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)<25):
+#     if butState==1 and butStateOld==0 and (time.ticks_diff(tUP,tDown)>25):
+
+#     # if butState==1 and butStateOld==0:
+#         press +=1
+#         print('TRIGGER: ',press)
+#         tDelta=time.ticks_diff(tUP,tDown)
+#         print(tDelta)
+#         rLed.toggle()
+#         if press>15:
+#             press =press-16
+#         if press%2==0:
+#             gLed.toggle()
+#         if press%4==0:
+#             bLed.toggle()
+#         if press%8==0:
+#             yLed.toggle()
+#     # tDown=tUP
+#     # tUp=tDown   
+#     butStateOld=butState
+    
+    
+# Button.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING ,handler=Binary)  ## i got around using Pin.IRQ_Falling by resetting the butStateOld to 0 
+
+# try:
+#     while True:
+#         pass
+       
+# except KeyboardInterrupt:
+#     print('all done')
+#     rLed.value(0)
+#     gLed.value(0)
+#     bLed.value(0)
+#     yLed.value(0)
+###~~ some practice  28 March 2025
+from time import sleep
+from machine import Pin, Timer
+import sys
+bPin=16
+rPin = 17
+yPin = 18
+gPin = 19
+butPin = 15
+bLed = Pin(bPin,Pin.OUT)
 rLed=Pin(rPin,Pin.OUT)
-gLed=Pin(gPin,Pin.OUT)
-bLed=Pin(bPin,Pin.OUT)
-yLed=Pin(yPin,Pin.OUT)
-Button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
+yLed =Pin(yPin,Pin.OUT)
+def YellowOff(pin):
+    yLed.value(1)
+button=Pin(butPin,Pin.IN,Pin.PULL_DOWN)
+def bBlink(pin):
+    bLed.toggle()
 
-    
-rLed.off()
-gLed.off()
-bLed.off()
-yLed.off()
-press=0
-tUP=time.ticks_ms
-tDown=time.ticks_ms
-# tDelta=time.ticks_diff(tDown,tUP)
-butStateOld=0
-def Binary(pin):
-    global press , butStateOld, tUP, tDown
-    # tUP=time.ticks_ms()
-    butState=Button.value()
-    if butState==1:
-        tDown=time.ticks_ms()
-    if butState==0:
-        tUp=time.ticks_ms()
-    # if butState==1 and butStateOld==0 and (time.ticks_diff(tDown,tUP)<25):
-    if butState==1 and butStateOld==0 and (time.ticks_diff(tUP,tDown)>25):
+def yBlink(pin):
+    yLed.value(0)
+    yPinTimer2=Timer(mode=Timer.ONE_SHOT,period=(2*period-100),callback=YellowOff)
 
-    # if butState==1 and butStateOld==0:
-        press +=1
-        print('TRIGGER: ',press)
-        tDelta=time.ticks_diff(tUP,tDown)
-        print(tDelta)
-        rLed.toggle()
-        if press>15:
-            press =press-16
-        if press%2==0:
-            gLed.toggle()
-        if press%4==0:
-            bLed.toggle()
-        if press%8==0:
-            yLed.toggle()
-    # tDown=tUP
-    # tUp=tDown   
-    butStateOld=butState
+def rBlink(pin):
+    rLed.toggle()
     
-    
-Button.irq(trigger=Pin.IRQ_RISING|Pin.IRQ_FALLING ,handler=Binary)  ## i got around using Pin.IRQ_Falling by resetting the butStateOld to 0 
-
+period =500
 try:
+    bPinTimer=Timer(mode=Timer.PERIODIC,period=2*period, callback=bBlink)
+    rPinTimer=Timer(mode=Timer.PERIODIC,period=2*period,callback=rBlink)
+    yPinTimer=Timer(mode=Timer.PERIODIC,period=2*period,callback=yBlink)
+    
+    
     while True:
         pass
-       
 except KeyboardInterrupt:
-    print('all done')
-    rLed.value(0)
-    gLed.value(0)
+    print('Good bye!')
+    bPinTimer.deinit()
+    rPinTimer.deinit()
+    yPinTimer.deinit()
     bLed.value(0)
+    rLed.value(0)
     yLed.value(0)
+    sys.exit()

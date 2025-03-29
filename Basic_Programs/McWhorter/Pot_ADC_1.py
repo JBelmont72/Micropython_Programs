@@ -1,4 +1,4 @@
-# import machine
+# import machine 
 # import utime
 # potPin = 26
 # myPot= machine.ADC(potPin)
@@ -53,7 +53,7 @@ while True:
     
 import machine
 import utime as time
-potPin = 26
+potPin = 28
 myPot= machine.ADC(potPin)
 RedLed = 16
 YellowLed =17
