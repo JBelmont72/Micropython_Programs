@@ -124,7 +124,7 @@ while True:
 #     # Wait for 10 seconds before next request
 #     time.sleep(10)
 '''
-#####~~~~~~ server on Pico with Struct the client side is in Python_Book_New
+#####~~~~~~ server on Pico with Struct the client side is in Python_Book_New and below!
 import network
 import usocket as socket
 # import secrets
@@ -132,7 +132,8 @@ import time
 import struct
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect('NETGEAR48','waterypanda901')
+wlan.connect('SpectrumSetup-41','leastdinner914')
+# wlan.connect('NETGEAR48','waterypanda901')
 # wlan.connect(secrets.SSID,secrets.PASSWORD)
  
 # Wait for connection
@@ -179,3 +180,47 @@ while True:
     
     # Optional: Pause for a short period to prevent overwhelming the client
     time.sleep(1)
+    
+### this is the picoW SERVER program to go with above CLIENT program
+# import network
+# import usocket as socket
+# # import secrets
+# import time
+ # import struct
+# wlan = network.WLAN(network.STA_IF)
+# wlan.active(True)
+# wlan.connect('NETGEAR48','waterypanda901')
+# # wlan.connect(secrets.SSID,secrets.PASSWORD)
+ 
+# # Wait for connection
+# while not wlan.isconnected():
+#     time.sleep(1)
+# print("Connection Completed")
+# print('WiFi connected')
+# print(wlan.ifconfig())
+ 
+# # Set up UDP server
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_socket.bind((wlan.ifconfig()[0], 12345))
+# print("Server is Up and Listening")
+# print(wlan.ifconfig()[0])
+ 
+# while True:
+#     print('Waiting for a request from the client...')
+#     # Receive request from client
+#     request, client_address = server_socket.recvfrom(1024)
+#     request=struct.unpack('9s',request)
+#     # print("Client Request:",request.decode())
+#     print("FROM CLIENT",client_address)
+#     print(f'From Client:  {request}')
+#     # String to send
+#     data = "225,128,64"
+#     ## send data to client using struct
+#     data=struct.pack('3i',data)
+#     server_socket.sendto(data,client_address)
+#     ## Send data to client
+#     #server_socket.sendto(data.encode(), client_address)
+#     print(f'Sent data to {client_address}')
+    
+#     # Optional: Pause for a short period to prevent overwhelming the client
+#     time.sleep(1)

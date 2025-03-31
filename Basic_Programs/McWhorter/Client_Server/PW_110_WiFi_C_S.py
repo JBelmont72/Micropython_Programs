@@ -10,7 +10,7 @@ import time
 ###server on pico
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect(secrets.SSID,secrets.PASSWORD)
+wlan.connect(secrets.ssid_condo,secrets.password_condo)
  
 # Wait for connection
 while not wlan.isconnected():
@@ -49,7 +49,7 @@ while True:
  
 # # Set up UDP client
 # client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# server_address = ('192.168.88.71', 12345)  # Adjust IP address and port as needed
+# server_address = ('192.168.1.223', 12345)  # Adjust IP address and port as needed
  
 # while True:
 #     # Send request to the server

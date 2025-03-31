@@ -7,6 +7,10 @@ important:
 # ## the real tDown when value goes to one from zero after a long interval of time.
 # ## thus want tDown - tUP  to be greater than what we want as a debounee time ( maybe 25 ms)
 
+Using separate up down counters with manipulation of the leds separately in each just provided confused logic.
+Much better to have the press value from the up and down counter passed to a third function using bitwise logic(% worked okay as well)
+(bitwise practice at bottom)
+the first sketch below works fine and uses a third function
 '''
 import sys
 from machine import Pin, Timer
@@ -33,10 +37,10 @@ yLed = Pin(yPin, Pin.OUT)
 # Initial states
 butStateOld = 0
 butStateOld2 = 0
-tUp = time.ticks_ms()
-tDown = time.ticks_ms()
-press = 0
-tUp2 = time.ticks_ms()
+tUp    = time.ticks_ms()
+tDown  = time.ticks_ms()
+press  = 0
+tUp2   = time.ticks_ms()
 tDown2 = time.ticks_ms()
 
 # Update LED states based on binary representation
@@ -71,7 +75,7 @@ def button_press2(pin):
         tDown2 = time.ticks_ms()
     timeDiff = time.ticks_diff(tDown2, tUp2)
     if ButtonState2 == 1 and butStateOld2 == 0 and timeDiff > 25:
-        if press > 0:  # Prevent negative values
+        if press > 0:  # This Prevents negative values. If value is one, then it goes to zero but stops there 
             press -= 1
             print('Button #2 count:', press)
             update_leds(press)

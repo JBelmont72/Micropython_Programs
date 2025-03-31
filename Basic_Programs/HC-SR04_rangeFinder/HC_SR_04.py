@@ -21,7 +21,7 @@ GPIO_ECHO = 15
 # GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 # GPIO.setup(GPIO_ECHO, GPIO.IN)
 Echo=machine.Pin(machine.Pin(15), machine.Pin.IN, machine.Pin.PULL_DOWN) 
-Trigger=machine.Pin(16),machine.Pin.OUT)
+Trigger=machine.Pin(16),machine.Pin.OUT
 def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER, True)
