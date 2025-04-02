@@ -1,6 +1,6 @@
 from machine import Pin,PWM
 from  time import sleep
-
+import machine
 ledRed =16
 ledGreen=17
 ledBlue = 18

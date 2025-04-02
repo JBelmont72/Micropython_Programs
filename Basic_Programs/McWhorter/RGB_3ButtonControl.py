@@ -1,10 +1,10 @@
 
 from machine import Pin,PWM
-from time import sleep
-
-pinRed = 16
-pinGreen = 17
-pinBlue = 18
+import time
+# import machine
+# pinRed = 16
+# pinGreen = 17
+# pinBlue = 18
 '''
 analogOutRed= PWM(pinRed)
 analogOutGreen = PWM(pinGreen)
@@ -23,20 +23,20 @@ analogOutRed.duty_u16(65535)
 analogOutGreen.duty_u16(65535)
 analogOutBlue.duty_u16(65535)
 '''
-ledR =16
-ledG =17
-ledB = 18
-ledRed = machine.Pin(ledR,Pin.OUT)
-ledGreen = machine.Pin(ledG,Pin.OUT)
-ledBlue = machine.Pin(ledB,Pin.OUT)
+ledR =17
+ledG =18
+ledB = 16
+ledRed = Pin(ledR,Pin.OUT)
+ledGreen = Pin(ledG,Pin.OUT)
+ledBlue = Pin(ledB,Pin.OUT)
 
-butRED =19
-butGREEN = 20
-butBLUE = 21
+butRED =13
+butGREEN = 14
+butBLUE = 15
 
-buttonRed = machine.Pin(butRED,Pin.IN,Pin.PULL_UP)
-buttonGreen = machine.Pin(butGREEN,Pin.IN,Pin.PULL_UP)
-buttonBlue = machine.Pin(butBLUE,Pin.IN,Pin.PULL_UP)
+buttonRed =Pin(butRED,Pin.IN,Pin.PULL_DOWN)
+buttonGreen = Pin(butGREEN,Pin.IN,Pin.PULL_DOWN)
+buttonBlue = Pin(butBLUE,Pin.IN,Pin.PULL_DOWN)
 
 ledStateRed = True
 newButValRed = 1
@@ -48,7 +48,8 @@ oldButValGreen = 1
 ledStateBlue = True
 newButValBlue =1
 oldButValBlue = 1
-
+tUp=time.time()
+tDown=time.time()
 
 
 while True:
@@ -57,21 +58,24 @@ while True:
     newButValBlue = buttonBlue.value()
     print("the blue button value is:  ", newButValBlue)
     print(newButValRed, oldButValRed)
-    sleep(.3)
+    time.sleep(.3)
     if (newButValRed == 0) and oldButValRed ==1:
+        
         ledRed.value(ledStateRed)
         ledStateRed = not ledStateRed
-        
+       
     
     oldButValRed = newButValRed
     if (newButValGreen ==0 and oldButValGreen == 1):
         ledGreen.value(ledStateGreen)
-        
         ledStateGreen = not ledStateGreen
+        
+    ledStateGreen = not ledStateGreen
            
     oldButValGreen = newButValGreen 
-    if (newButValBlue ==0 and oldButValBlue ==1 ):
+    if (newButValBlue ==1 and oldButValBlue ==0 ):
+        print('oldButVal',oldButValBlue)
         ledBlue.value(ledStateBlue)
-        ledStateBlue = not ledStateGreen
+        ledStateBlue = not ledStateBlue
     oldButValBlue = newButValBlue           
         

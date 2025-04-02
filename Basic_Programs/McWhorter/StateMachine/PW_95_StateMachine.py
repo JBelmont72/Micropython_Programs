@@ -1,4 +1,4 @@
-'''PW95
+'''PW95  up down working counter at bottom!!
 my attempt at binary counter on one pin(pin 14 which is 0b0001).  
 0b1111 which we will invert  and use dec_ to make a count up binary counter. 
 Reset to 0b000- with pin 15 ( y=0b0010), check PW 95 binary counter with reset

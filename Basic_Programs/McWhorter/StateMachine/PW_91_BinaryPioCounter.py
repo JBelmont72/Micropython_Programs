@@ -33,6 +33,7 @@ https://www.youtube.com/watch?v=ob80LODRleo
 #     pass
 
 ### this program takes user input and does an up binary counter
+import sys
 import rp2
 import time
 from machine import Pin
@@ -44,36 +45,28 @@ def pioProg():
     mov(x,osr)
     #set(x,0b1111)
     label('bitloop')
-    mov(pins,invert(x))[31]
+    # mov(pins,invert(x))[31]
+    mov(pins,x)[31]
+    nop()[31]
+    nop()[31]
+    nop()[31]
+    nop()[31]
+    set(y,0b1111)
+    mov(isr,y)
+    in_(y,1)
+    mov(y,isr)
+    mov(isr,null)
+    label('delay')
+    nop()[31]
+    jmp(y_dec,'delay')
+    nop()[31]
     
     nop()[31]
     nop()[31]
     nop()[31]
     nop()[31]
     nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]  
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]
-    nop()[31]  
-    nop()[31]
-
+   
     jmp(x_dec,'bitloop')[31]
     push()
     wrap()
@@ -91,6 +84,7 @@ try:
 except KeyboardInterrupt:
     sm0.active(0)
     print('done')
+    sys.exit()
 
 ### countdown timer
 # import rp2
