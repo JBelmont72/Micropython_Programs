@@ -108,60 +108,60 @@ lesson 94
 # except KeyboardInterrupt:
 #     sm0.active(0)
 #     sys.exit()
-import rp2 ## this works great
-import sys
-from machine import Pin
-@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
-def pioProg():
-    set(y,0b1111)
-    wrap_target()
-    # set(y,0b1111) either location should be good since it always runs between the readagain 
-    label('readAgain')
-    mov(isr,null)
-    in_(pins,2)
-    nop()[31]
-    nop()[31]
-    mov(x,isr)
-    jmp(not_x,'readAgain')
-    mov(osr,y)## i am storing the y value in OSR and will retrieve it as necessary
-    set(y,0b10)
-    jmp(x_not_y,'checkRed')## if y 10 does not equal x from the pins then it must be 1 or 11
-    mov(y,osr)
+# import rp2 ## this works great
+# import sys
+# from machine import Pin
+# @rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+# def pioProg():
+#     set(y,0b1111)
+#     wrap_target()
+#     # set(y,0b1111) either location should be good since it always runs between the readagain 
+#     label('readAgain')
+#     mov(isr,null)
+#     in_(pins,2)
+#     nop()[31]
+#     nop()[31]
+#     mov(x,isr)
+#     jmp(not_x,'readAgain')
+#     mov(osr,y)## i am storing the y value in OSR and will retrieve it as necessary
+#     set(y,0b10)
+#     jmp(x_not_y,'checkRed')## if y 10 does not equal x from the pins then it must be 1 or 11
+#     mov(y,osr)
     
-    jmp(y_dec,'decrement')
-    label('decrement')
+#     jmp(y_dec,'decrement')
+#     label('decrement')
     
-    wait(0,pin,1)
-    nop()[31]
-    nop()[31]
-    mov(pins,y)
-    # mov(osr,y) ## do not need it since it is above when the readAgain occurs
-    jmp('readAgain')
+#     wait(0,pin,1)
+#     nop()[31]
+#     nop()[31]
+#     mov(pins,y)
+#     # mov(osr,y) ## do not need it since it is above when the readAgain occurs
+#     jmp('readAgain')
     
-    label('checkRed')
-    set(y,0b01)
-    jmp(x_not_y,'readAgain')## this covers if the pins are not 01 (could be 11 if both pushed)
-    mov(y,osr)
-    mov(y,invert(y))
-    jmp(y_dec,'increment') ## this does increment 
-    label('increment')
-    mov(y,invert(y))
-    wait(0,pin,0)
-    nop()[31]
-    nop()[31]
+#     label('checkRed')
+#     set(y,0b01)
+#     jmp(x_not_y,'readAgain')## this covers if the pins are not 01 (could be 11 if both pushed)
+#     mov(y,osr)
+#     mov(y,invert(y))
+#     jmp(y_dec,'increment') ## this does increment 
+#     label('increment')
+#     mov(y,invert(y))
+#     wait(0,pin,0)
+#     nop()[31]
+#     nop()[31]
     
-    mov(pins,y)
-    jmp('readAgain')
-    wrap()
-RedBut=Pin(15,Pin.IN,Pin.PULL_DOWN)  
-sm0= rp2.StateMachine(0,pioProg,freq=2000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),out_base=Pin(16,Pin.OUT))
-sm0.active(1)
-try:
-    while True:
-        pass
-except KeyboardInterrupt:
-    sm0.active(0)
-    sys.exit()
+#     mov(pins,y)
+#     jmp('readAgain')
+#     wrap()
+# RedBut=Pin(15,Pin.IN,Pin.PULL_DOWN)  
+# sm0= rp2.StateMachine(0,pioProg,freq=2000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),out_base=Pin(16,Pin.OUT))
+# sm0.active(1)
+# try:
+#     while True:
+#         pass
+# except KeyboardInterrupt:
+#     sm0.active(0)
+#     sys.exit()
 ### below working up down counter   
 # import rp2
 # from time import sleep
@@ -216,3 +216,52 @@ except KeyboardInterrupt:
 # sm1.active(1)
 # while True:
 #     pass
+##### 2 Apr 2025  red is pin 14, RED 0b0001  :: blue is 15 0b0010
+from machine import Pin
+import sys
+import rp2
+@rp2.asm_pio(out_init=(rp2.PIO.OUT_LOW,)*4,out_shiftdir=rp2.PIO.SHIFT_RIGHT)
+def pioProg():
+    wrap_target()
+    set(y,0b1111)
+    label('readAgain')
+    mov(isr,null)
+    in_(pins,2)
+    nop()[31]
+    nop()[31]
+    mov(x,isr)
+    mov(osr,y)
+    jmp(not_x,'readAgain')  ## if x is zero. jmp to readAgain
+    set(y,0b0001) ## red
+    jmp(x_not_y,'CheckBlue')  ## blue will be count down
+    mov(y,osr)
+    wait(0,pin,0)
+    nop()[31]
+    mov(y,invert(y))
+    jmp(y_dec,'increment')
+    label('increment')
+    mov(y,invert(y))
+    mov(pins,y)
+    mov(osr,y)
+    jmp('readAgain')
+    label('CheckBlue')
+    set(y,0b0010)
+    jmp(x_not_y,'readAgain')
+    mov(y,osr)## retreving y from osr storage
+    jmp(y_dec,'decrement')
+    label('decrement')
+    wait(0,pin,1)
+    nop()[31]
+    nop()[31]
+    mov(pins,y)
+    jmp('readAgain')
+    wrap()
+BlueBut=Pin(15,Pin.IN,Pin.PULL_DOWN)
+sm0=rp2.StateMachine(0,pioProg,freq=2000,in_base=Pin(14,Pin.IN,Pin.PULL_DOWN),out_base=Pin(16,Pin.OUT))
+sm0.active(1)
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    sm0.active(0)
+    sys.exit()

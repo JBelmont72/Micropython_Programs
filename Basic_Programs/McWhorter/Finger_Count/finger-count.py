@@ -1,5 +1,5 @@
 '''
-
+this is an alternate version to UDP_Ser_FingerCount.py
 '''
 
 #Picow Server side for finger count , receive count,calculate angle and move servo
@@ -31,7 +31,10 @@ servo.freq(50)
 servo.duty_u16(0)
 
 def set_servo_angle(angle):
-    duty = int((angle / 180) * 1023)  # Map angle to duty cycle
+    duty = int(6553/180*angle+1638)
+
+    print(duty)
+    # duty = int((angle / 180) * 1023)  # Map angle to duty cycle
     servo.duty_u16(duty)
 
 while True:

@@ -260,7 +260,7 @@ def servo():
     
     wrap()
 servoPin=Pin(0,Pin.OUT)
-sm0=rp2.StateMachine(0,servo,2000000,set_base=Pin(0,Pin.OUT))
+sm0=rp2.StateMachine(0,servo,2000000,set_base=Pin(2,Pin.OUT))
 sm0.active(1)
 x=0
 while True:

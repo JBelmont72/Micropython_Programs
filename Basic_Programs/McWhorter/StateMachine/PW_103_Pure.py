@@ -44,7 +44,7 @@ incorporate IRQ interrupts on the Pi Pico PIO State Machines. The state machines
 import rp2
 from machine import Pin
 import time
- 
+import sys
 @rp2.asm_pio()
 def button_irq():
     wrap_target()
@@ -71,10 +71,12 @@ def led_control():
     irq(clear, 0)
     wrap()
  
-button_pin = Pin(11,Pin.IN,Pin.PULL_DOWN)
+button_pin = Pin(14,Pin.IN,Pin.PULL_DOWN)
 sm_button=rp2.StateMachine(0,button_irq, freq=2000, in_base=button_pin)
  
-led_pin = Pin(18, Pin.OUT)
+led_pin = Pin(16, Pin.OUT)
 sm_led=rp2.StateMachine(1, led_control, freq=2000, out_base=led_pin)
 sm_button.active(1)
 sm_led.active(1)
+while True:
+    pass

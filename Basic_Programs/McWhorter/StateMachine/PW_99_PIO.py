@@ -115,7 +115,7 @@ def servo():
     jmp(y_dec,'loop')  
     wrap() 
 servoPin=Pin(0,Pin.OUT)       
-sm0=rp2.StateMachine(0,servo,2000000,set_base=Pin(0,Pin.OUT))
+sm0=rp2.StateMachine(0,servo,2000000,set_base=Pin(2,Pin.OUT))
 sm0.active(1)
 # sm0.put(20000)
 # sm0.exec("pull()")

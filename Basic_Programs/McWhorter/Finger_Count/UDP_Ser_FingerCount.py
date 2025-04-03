@@ -10,7 +10,7 @@ import machine
 # Setup Wi-Fi
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-wlan.connect('NETGEAR48', 'waterypanda901')
+wlan.connect('','')
 
 while not wlan.isconnected():
     time.sleep(1)
