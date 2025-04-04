@@ -5,6 +5,10 @@ Message: What you want to send (e.g., "Turn Motor ON")
 Connect, publish, disconnect: Basic steps to send data!
 
 '''
+
+
+
+
 import paho.mqtt.client as mqtt  ## python publisher client
 
 # broker = "broker.hivemq.com" 

@@ -1,4 +1,14 @@
 '''
+Pyqt_1.py and Pyqt5_basic.py show the building blocks for the PW_111_PyQt5.py with 3 led widgets and a slider
+Clarification( repeat of  below)
+window = QWidget()    !! this creates the window object
+## next CREATES THE NEXT LEVEL DOWN FROM THE WINDOW ABOVE
+widgetBox=QVBoxLayout(window) !!!!!
+## Now build boxes inside the widgetBox.
+buttonBox=QHBoxLayout()  !!!!   ## this goes inside the widgetBox, this creates the  buttonBox object.
+# widgetBox.addLayout(buttonBox)  ## adds the buttonBox  to inside the widgetBox, this places the buttonBox
+## the widgetBox at this point is empty, next create a button below. NOTE that below we add 'widgetBox.addLayout(buttonBox) near end!!!!
+## what this does is add the 'buttonBox' to inside the widgetBox(which has already been added to the 'window') You can see this a few lines up where 'widgetBox=QVBoxLayout(window)' appears
 
 
 '''
@@ -44,10 +54,12 @@ window.setWindowTitle('My very own Widget')
 window.setGeometry(100,100,800,600)## x,y,width,height
 ## next CREATES THE NEXT LEVEL DOWN FROM THE WINDOW ABOVE
 widgetBox=QVBoxLayout(window)
-## Now build boxes inside the widgetBox. 
+## Now build boxes inside the widgetBox.
+# buttonBox=QVBoxLayout() ## note, if I used this with the QV , the contents insode are stacked vertically!
 buttonBox=QHBoxLayout()     ## this goes inside the widgetBox, this creates the  buttonBox object.
 # widgetBox.addLayout(buttonBox)  ## adds the buttonBox  to inside the widgetBox, this places the buttonBox
-## the widgetBox at this point is empty, next create a button below
+## the widgetBox at this point is empty, next create a button below. NOTE that below we add 'widgetBox.addLayout(buttonBox) near end!!!!
+## what this does is add the 'buttonBox' to inside the widgetBox(which has already been added to the 'window') You can see this a few lines up where 'widgetBox=QVBoxLayout(window)' appears
 blueButton = QPushButton('Blue Button')
 blueButton.setStyleSheet('background-color: blue;color: white;')## the format is very specific!!
 blueButton.clicked.connect(blueButtonpressed)
@@ -92,12 +104,8 @@ widgetBox.addWidget(slider)
 
 widgetBox.addStretch()## this raises the widgetBOx to the top
 
-window.setLayout(widgetBox) ## highset level
+window.setLayout(widgetBox) ## highset level ?? program worked when I commented this!
 window.show()
-
-
-
-
 
 sys.exit(app.exec_())
 
