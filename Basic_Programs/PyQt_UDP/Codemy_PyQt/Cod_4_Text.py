@@ -121,16 +121,17 @@ class MainWindow(qtw.QWidget):
     def go_to_pizza_window(self):
         name = self.name_entry.text().strip()
         if name:
-            self.pizza_window = PizzaWindow(name)
+            fingers =5          ## i added fingers just to reinforce sending arguemts to the second page
+            self.pizza_window = PizzaWindow(name,fingers) ## passing name to the PizzaWindow(name) constructor
             self.pizza_window.show()
             self.close()
 
 
 class PizzaWindow(qtw.QWidget):
-    def __init__(self, name):
+    def __init__(self, name,fingers):
         super().__init__()
         self.name = name
-
+        self.fingers=fingers
         self.setWindowTitle("Pizza Window")
         self.setLayout(qtw.QVBoxLayout())
 
@@ -141,8 +142,13 @@ class PizzaWindow(qtw.QWidget):
         self.my_text = qtw.QTextEdit(
             lineWrapMode=qtw.QTextEdit.FixedColumnWidth,
             lineWrapColumnOrWidth=75,
-            placeholderText='Hello World',
-            readOnly=False
+            # placeholderText='Hello World',
+            placeholderText=f'Hello World, I have {self.fingers} fingers',
+            readOnly=False,
+            acceptRichText=True, ## rich text is text with formatting, bold,italic,colored, etc> I would paste it inot the box
+            # plainText = 'This is real text, does not dissapear',
+            # html ='<center><h1><em>Big Header Text!</em></h1></center><h2><em>my second line</em></h2>' ## this will add html, 
+            readOnly=False  ### this is the default. if True, can not overwrite or change
         )
         self.layout().addWidget(self.my_text)
 
@@ -152,6 +158,7 @@ class PizzaWindow(qtw.QWidget):
     def press_it(self):
         typed = self.my_text.toPlainText()
         self.label.setText(f"{self.name}, you typed: {typed}")
+        # self.my_text.setPlainText('You clicked the button') ## this will set the text in the textBox widget that is placed in 'layout' created by:   self.my_text = qtw.QTextEdit(params)
 
 
 app = qtw.QApplication([])

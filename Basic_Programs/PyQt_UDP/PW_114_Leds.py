@@ -1,6 +1,6 @@
 '''
- In this video lesson we create an interesting project. We create a PyQt Window which  used 3 Sine Waves offset from each other by (2*Pi/). By offsetting the Sine Waves each by this amount creates 3 waves perfectly spaced across the domain. We then use the values from these sine waves to create the Red, Green and Blue values for the HSV color wheel. The x axis represents angle, in radians. Then the values of the sine wave represent the corresponding Red, Green, and Blue values. The program graphs the three waves on the PyQt widget, then passes the data via UDP over WiFi to the Pi Pico. The Pico then applies the values to the RGB LED.  We save the server side program on the Pi Pico as main.py, and power the project with the Breadboard Power Bank, meaning the Pi operates remote and untethered, and the LED is controlled by the desktop client software. This is a schematic of the Pi Pico circuit for the project.
-This project has a server running on the Raspberry Pi Pico, and a Client running on your desktop PC. Here is the code for the server side for the Pi Pico.
+ Create a PyQt Window which  used 3 Sine Waves offset from each other by (2*Pi/). By offsetting the Sine Waves each by this amount creates 3 waves perfectly spaced across the domain. We then use the values from these sine waves to create the Red, Green and Blue values for the HSV color wheel. The x axis represents angle, in radians. Then the values of the sine wave represent the corresponding Red, Green, and Blue values. The program graphs the three waves on the PyQt widget, then passes the data via UDP over WiFi to the Pi Pico. The Pico then applies the values to the RGB LED.  We save the server side program on the Pi Pico as main.py, and power the project with the Breadboard Power Bank, meaning the Pi operates remote and untethered, and the LED is controlled by the desktop client software. This is a schematic of the Pi Pico circuit for the project.
+This project has a server running on the Raspberry Pi Pico, and a Client running on your desktop PC. First-  is the code for the server side for the Pi Pico.
 '''
 import network
 import usocket as socket
@@ -19,8 +19,10 @@ blueLED.freq(1000)
 # Set up WiFi connection
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
-print(secrets.SSID,secrets.PASSWORD)
-wlan.connect(secrets.SSID,secrets.PASSWORD)
+print(secrets.ssid_loft,secrets.password_loft)
+wlan.connect(secrets.ssid_loft,secrets.password_loft)
+# print(secrets.SSID,secrets.PASSWORD)
+# wlan.connect(secrets.SSID,secrets.PASSWORD)
  
 # Wait for connection
 while not wlan.isconnected():

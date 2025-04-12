@@ -1,6 +1,61 @@
 
 QT website  https://doc.qt.io/qtforpython-6/index.html
 
+Best Way to Get Qt Designer on Mac (2025-compatible)
+Instead of installing pyqt5-tools, which is mainly for Windows, follow this macOS-friendly approach:
+✅ Step-by-Step Setup on macOS
+
+1. Install Qt (Includes Designer) Using Homebrew
+If you don’t already have Homebrew:
+bash
+Copy
+Edit
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+Then install Qt (includes Qt Designer GUI):
+bash
+Copy
+Edit
+brew install qt
+Once installed, locate Designer:
+bash
+Copy
+Edit
+brew list qt
+You should see something like:
+bash
+Copy
+Edit
+/opt/homebrew/Cellar/qt/6.6.2/bin/designer
+That’s your Qt Designer executable.
+2. Run Qt Designer
+Add it to your path or just run:
+bash
+Copy
+Edit
+/opt/homebrew/opt/qt/bin/designer
+Or create a shortcut:
+bash
+Copy
+Edit
+alias designer="/opt/homebrew/opt/qt/bin/designer"
+Now you can simply type:
+designer
+3. Use .ui Files in Your PyQt5 Project
+You can now design GUIs with drag-and-drop and save .ui files. To use those in Python:
+pip install pyqt5 pyqt5-tools
+Then convert .ui to .py (if needed):
+
+pyuic5 your_file.ui -o your_file.py
+✅ Summary
+
+Task	Method
+Install Designer	brew install qt
+Launch Designer	/opt/homebrew/opt/qt/bin/designer
+Convert .ui to .py	pyuic5 yourfile.ui -o output.py
+Avoid pyqt5-tools	It’s mostly for Windows environments
+(.venv) judsonbelmont@MacBook-Pro PyQt5 % alias designer="/opt/homebrew/opt/qt/bin/designer"  I can run with command designer
+
+
 COOL FUTURE PROJECT:   https://medium.com/@ilias.info.tel/display-opencv-camera-on-a-pyqt-app-4465398546f7
 can display opencv in PYQT5!! 
 in PyQt_UPP / UDP folder I have led_Client which has multiple programs to control leds remotely by UDP:

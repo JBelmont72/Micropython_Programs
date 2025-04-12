@@ -9,69 +9,94 @@ PW_110_CLient.py in python_book_new Folder
 5- client python side with wifi connection, if ran on a pico etc. 
 '''
 ## PicoW Server
-# import network
-# import usocket as socket
-# # import secrets
-# import time
-# import machine
+import network
+import usocket as socket
+import secrets
+import time
+import machine
  
-# greenLED=machine.Pin(16,machine.Pin.OUT)
-# yellowLED=machine.Pin(18,machine.Pin.OUT)
-# redLED=machine.Pin(17,machine.Pin.OUT)
-# # Set up WiFi connection
-# wlan = network.WLAN(network.STA_IF)
-# wlan.active(True)
+greenLED=machine.Pin(16,machine.Pin.OUT)
+yellowLED=machine.Pin(18,machine.Pin.OUT)
+redLED=machine.Pin(17,machine.Pin.OUT)
+# Set up WiFi connection
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
 
-# print('secrets.ssid_condo','secrets.password_condo')
-# wlan.connect('secrets.ssid_condo','.secrets.password_condo')
-# # print(secrets.SSID,secrets.PASSWORD)
-# # wlan.connect(secrets.SSID,secrets.PASSWORD)
+print(secrets.ssid_condo,secrets.password_condo)
+wlan.connect(secrets.ssid_condo,secrets.password_condo)
+# print(secrets.SSID,secrets.PASSWORD)
+# wlan.connect(secrets.SSID,secrets.PASSWORD)
  
-# # Wait for connection
-# while not wlan.isconnected():
-#     time.sleep(1)
-# print("Connection Completed")
-# print('WiFi connected')
-# print(wlan.ifconfig())
+# Wait for connection
+while not wlan.isconnected():
+    time.sleep(1)
+print("Connection Completed")
+print('WiFi connected')
+print(wlan.ifconfig())
  
-# # Set up UDP server
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# server_socket.bind((wlan.ifconfig()[0], 12345))
-# print("Server is Up and Listening")
-# print(wlan.ifconfig()[0])
+# Set up UDP server
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_socket.bind((wlan.ifconfig()[0], 12345))
+print("Server is Up and Listening")
+print(wlan.ifconfig()[0])
+ 
+while True:
+    print('Waiting for a request from the client...')
+    # Receive request from client
+    color, client_address = server_socket.recvfrom(1024)
+    color=color.decode()
+    print("Client Request:",color)
+    print("FROM CLIENT",client_address)
+    
+    if (color=="green"):
+        greenLED.on()
+        yellowLED.off()
+        redLED.off()
+    if (color=="yellow"):
+        greenLED.off()
+        yellowLED.on()
+        redLED.off()
+    if (color=="red"):
+        greenLED.off()
+        yellowLED.off()
+        redLED.on()
+    if (color=="off"):
+        greenLED.off()
+        yellowLED.off()
+        redLED.off()
+    
+    # Send data to client
+    data="LED "+color+" executed"
+    server_socket.sendto(data.encode(), client_address)
+    print(f'Sent data to {client_address}')
+    
+    # Optional: Pause for a short period to prevent overwhelming the client
+    time.sleep(1)
+## this is the client side for the picoW server above
+#### client for python  in Python_Book_New
+# import socket   ##client for PW110 in MIcropython_Programs/Basic_Programs/McWhorter/StateMachine/PIO_HCS04/PW_110_Socket_Server.py
+# import time
+ 
+# # Set up UDP client
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_address = ('192.168.1.223', 12345)  # Adjust IP address and port as needed
  
 # while True:
-#     print('Waiting for a request from the client...')
-#     # Receive request from client
-#     color, client_address = server_socket.recvfrom(1024)
-#     color=color.decode()
-#     print("Client Request:",color)
-#     print("FROM CLIENT",client_address)
+#     # Send request to the server
+#     myColor=input("Please Input Your Color (Green, Yellow, Red, Off )")
+#     myColor=myColor.lower()
+#     client_socket.sendto(myColor.encode(), server_address)
     
-#     if (color=="green"):
-#         greenLED.on()
-#         yellowLED.off()
-#         redLED.off()
-#     if (color=="yellow"):
-#         greenLED.off()
-#         yellowLED.on()
-#         redLED.off()
-#     if (color=="red"):
-#         greenLED.off()
-#         yellowLED.off()
-#         redLED.on()
-#     if (color=="off"):
-#         greenLED.off()
-#         yellowLED.off()
-#         redLED.off()
+#     # Receive data from the server
+#     data, addr = client_socket.recvfrom(1024)
+#     print('Received data:', data.decode())
     
-#     # Send data to client
-#     data="LED "+color+" executed"
-#     server_socket.sendto(data.encode(), client_address)
-#     print(f'Sent data to {client_address}')
     
-#     # Optional: Pause for a short period to prevent overwhelming the client
-#     time.sleep(1)
+    
+    
+    
+    
+    
 # ###~~~~~~~ struct version of picoW server with socket
 # import network
 # import usocket as socket
@@ -174,32 +199,32 @@ while True:
 
 ###### the client side /Users/judsonbelmont/Documents/SharedFolders/Python/Python_Book_New/UDP/UDP_C_PW110.py
 ## i would copy below on python editor
-import socket
-import struct
+# import socket
+# import struct
 
-# Server details
-SERVER_IP = '192.168.1.223'  # Replace with your Pico W's IP address
-SERVER_PORT = 12345
+# # Server details
+# SERVER_IP = '192.168.1.223'  # Replace with your Pico W's IP address
+# SERVER_PORT = 12345
 
-# Set up UDP client
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# # Set up UDP client
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-while True:
-    command = input("Enter LED color (green, yellow, red, off): ").strip().lower()
+# while True:
+#     command = input("Enter LED color (green, yellow, red, off): ").strip().lower()
     
-    if command not in {"green", "yellow", "red", "off"}:
-        print("Invalid command. Please enter 'green', 'yellow', 'red', or 'off'.")
-        continue
+#     if command not in {"green", "yellow", "red", "off"}:
+#         print("Invalid command. Please enter 'green', 'yellow', 'red', or 'off'.")
+#         continue
 
-    # Pack the command and send it
-    packed_command = struct.pack(f'{len(command)}s', command.encode())
-    client_socket.sendto(packed_command, (SERVER_IP, SERVER_PORT))
+#     # Pack the command and send it
+#     packed_command = struct.pack(f'{len(command)}s', command.encode())
+#     client_socket.sendto(packed_command, (SERVER_IP, SERVER_PORT))
     
-    # Receive and unpack response from server
-    response, _ = client_socket.recvfrom(1024)
-    length = len(response)
-    unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
-    print("Server Response:", unpacked_response)
+#     # Receive and unpack response from server
+#     response, _ = client_socket.recvfrom(1024)
+#     length = len(response)
+#     unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
+#     print("Server Response:", unpacked_response)
 
 
 
@@ -240,60 +265,61 @@ while True:
 #     time.sleep(1)
     
 ## try to run the above from a picoW as the client but use buttons for the input    
-import network
-import usocket as socket
-import time
-import struct
-from machine import Pin
+# import network
+# import usocket as socket
+# import time
+# import struct
+# from machine import Pin
 
-# Button pin assignments
-gPin, yPin, rPin, offPin = 13, 14, 15, 12
-greenBut = Pin(gPin, Pin.IN, Pin.PULL_DOWN)
-yellowBut = Pin(yPin, Pin.IN, Pin.PULL_DOWN)
-redBut = Pin(rPin, Pin.IN, Pin.PULL_DOWN)
-offBut = Pin(offPin, Pin.IN, Pin.PULL_DOWN)
+# # Button pin assignments
+# gPin, yPin, rPin, offPin = 13, 14, 15, 12
+# greenBut = Pin(gPin, Pin.IN, Pin.PULL_DOWN)
+# yellowBut = Pin(yPin, Pin.IN, Pin.PULL_DOWN)
+# redBut = Pin(rPin, Pin.IN, Pin.PULL_DOWN)
+# offBut = Pin(offPin, Pin.IN, Pin.PULL_DOWN)
 
-# WiFi setup
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect('NETGEAR48', 'waterypanda901')
+# # WiFi setup
+# wlan = network.WLAN(network.STA_IF)
+# wlan.active(True)
+# wlan.connect('SpectrumSetup-41', 'leastdinner914')
+# # wlan.connect('NETGEAR48', 'waterypanda901')
 
-while not wlan.isconnected():
-    time.sleep(1)
-print("Connection Completed")
-print('WiFi connected:', wlan.ifconfig())
+# while not wlan.isconnected():
+#     time.sleep(1)
+# print("Connection Completed")
+# print('WiFi connected:', wlan.ifconfig())
 
-# Set up UDP client
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.1.223', 12345)
-last_command = None  # Store the last command to prevent redundant sending
+# # Set up UDP client
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_address = ('192.168.1.223', 12345)
+# last_command = None  # Store the last command to prevent redundant sending
 
-while True:
-    # Read button values
-    if greenBut.value():
-        command = 'green'
-    elif yellowBut.value():
-        command = 'yellow'
-    elif redBut.value():
-        command = 'red'
-    elif offBut.value():
-        command = 'off'
-    else:
-        command = None  # No button pressed
+# while True:
+#     # Read button values
+#     if greenBut.value():
+#         command = 'green'
+#     elif yellowBut.value():
+#         command = 'yellow'
+#     elif redBut.value():
+#         command = 'red'
+#     elif offBut.value():
+#         command = 'off'
+#     else:
+#         command = None  # No button pressed
 
-    # Send command only if it's new
-    if command and command != last_command:
-        packed_command = struct.pack(f'{len(command)}s', command.encode())
-        client_socket.sendto(packed_command, server_address)
+#     # Send command only if it's new
+#     if command and command != last_command:
+#         packed_command = struct.pack(f'{len(command)}s', command.encode())
+#         client_socket.sendto(packed_command, server_address)
         
-        # Receive acknowledgment
-        response, _ = client_socket.recvfrom(1024)
-        length = len(response)
-        unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
-        print("Server Response:", unpacked_response)
+#         # Receive acknowledgment
+#         response, _ = client_socket.recvfrom(1024)
+#         length = len(response)
+#         unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
+#         print("Server Response:", unpacked_response)
 
-        last_command = command  # Update last command
-        time.sleep(0.1)  # Debounce
+#         last_command = command  # Update last command
+#         time.sleep(0.1)  # Debounce
 
-    time.sleep(0.1)  # Small delay to reduce CPU usage
+#     time.sleep(0.1)  # Small delay to reduce CPU usage
 

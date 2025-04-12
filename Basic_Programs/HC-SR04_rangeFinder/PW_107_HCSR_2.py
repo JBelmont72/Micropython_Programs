@@ -43,10 +43,11 @@ So, for each iteration of the loop, it takes 3 cycles. When you call sm.get(), y
 #     print("Distance to Target: ",distance)
 #     time.sleep(.25)
 
-####~~~~~ improved with   I added a copy ot this to HCS04_interupt.py to try to overide Joytsick MQTT!!!
-# More Accurate Timing: Use a higher frequency for more precise timing, though 1 MHz is generally fine.
-# Avoid Blocking: Use interrupts or a non-blocking loop to avoid stalling the program during the sm.get() call.
-# Error Handling: Add a timeout to handle cases where no echo is received, preventing infinite waits.
+####~~~~~ improved with 
+I want to add a copy of this to HCS04_interupt.py to try to overide Joytsick MQTT!!!
+More Accurate Timing: Use a higher frequency for more precise timing, though 1 MHz is generally fine.
+Avoid Blocking: Use interrupts or a non-blocking loop to avoid stalling the program during the sm.get() call.
+Error Handling: Add a timeout to handle cases where no echo is received, preventing infinite waits.
 import rp2
 from machine import Pin
 import time

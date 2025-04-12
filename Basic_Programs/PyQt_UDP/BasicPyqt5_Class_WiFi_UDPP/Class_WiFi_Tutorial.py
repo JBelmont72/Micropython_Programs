@@ -1,4 +1,4 @@
-'''
+'''Client and server.py in this folder are the same as below but separated. Run the Server on PicoW.
 https://www.tutorialexample.com/understand-pyqt-qhboxlayout-addstretch-with-examples-for-beginners-pyqt-tutorial/
 Here we create two buttons with QPushButton class, then add these two buttons into QHBoxLayout using hbox.addWidget(), finally, we use self.setLayout(hbox) to set layout of our window frame is QHBoxLayout.
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 
 ############ MQTT and UPD combined  PyQt5 program to support both UDP and MQTT communication when clicking the buttons.
-''' New Features Added:
+''' New Features Added: CLIENT
 UDP Messaging: Sends "Find" or "Select" over UDP to a Pico W.
 MQTT Messaging: Publishes "Find" or "Select" to an MQTT topic.
 ⚡ How It Works:
@@ -335,16 +335,15 @@ MQTT Settings:
 Set MQTT_BROKER = "192.168.1.101" to match your Mosquitto broker.
 Your PyQt5 client should use the same broker IP.
 '''
-
+import secrets
 import network
 import socket
 import machine
 from umqtt.simple import MQTTClient
 
 # Configure Wi-Fi
-SSID = "your_SSID"
-PASSWORD = "your_PASSWORD"
-
+SSID = "secrets.ssid_condo"
+PASSWORD = "secrets.password_condo"
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 wlan.connect(SSID, PASSWORD)
@@ -359,7 +358,10 @@ PICO_IP = wlan.ifconfig()[0]  # Automatically gets assigned IP
 UDP_PORT = 12345  # Must match PyQt5 client
 
 # MQTT Setup
-MQTT_BROKER = "192.168.1.101"  # Change to your MQTT broker's IP
+
+# MQTT_BROKER = "broker.hivemq.com" 
+MQTT_BROKER = 'test.mosquitto.org'
+# MQTT_BROKER = "192.168.1.101"  # Change to your MQTT broker's IP
 MQTT_TOPIC = "pico/commands"
 
 # Initialize MQTT Client

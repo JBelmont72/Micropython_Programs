@@ -1,6 +1,6 @@
 '''
 class version of PW111
-ERROS in first version_ not corrected:
+ERRORS in first version_ not corrected:
 1. ❌ window = QWidget() creates a separate window, which you don't need inside your MainWindow.
 ✅ You're already inheriting from QWidget with class MainWindow(QWidget):, so just work with self directly.
 ❌ window.setLayout(widgetBox) — this refers to the wrong window.
@@ -30,8 +30,8 @@ class MainWindow(QWidget):
         self.setWindowTitle('My very own Widget')
         self.setGeometry(100, 100, 800, 600)
 
-        widgetBox = QVBoxLayout()
-        buttonBox = QHBoxLayout()
+        widgetBox = QVBoxLayout() ##here i create a vertical layout for the widget
+        buttonBox = QHBoxLayout() ## Here i create a horizontal layout for the buttons
 
         # Blue Button
         blueButton = QPushButton('Blue Button')
@@ -65,7 +65,7 @@ class MainWindow(QWidget):
         
         buttonBox.addWidget(self.offButton)
 
-        widgetBox.addLayout(buttonBox)
+        widgetBox.addLayout(buttonBox) ## here i add the buttonBOx to the widgetBox
 
         # Slider Label and Slider
         self.sliderLabel = QLabel("Frequency: 1.0 Hz")
