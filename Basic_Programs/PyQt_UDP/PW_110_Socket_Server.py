@@ -9,69 +9,69 @@ PW_110_CLient.py in python_book_new Folder
 5- client python side with wifi connection, if ran on a pico etc. 
 '''
 ## PicoW Server
-import network
-import usocket as socket
-import secrets
-import time
-import machine
+# import network
+# import usocket as socket
+# import secrets
+# import time
+# import machine
  
-greenLED=machine.Pin(16,machine.Pin.OUT)
-yellowLED=machine.Pin(18,machine.Pin.OUT)
-redLED=machine.Pin(17,machine.Pin.OUT)
-# Set up WiFi connection
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
+# greenLED=machine.Pin(16,machine.Pin.OUT)
+# yellowLED=machine.Pin(18,machine.Pin.OUT)
+# redLED=machine.Pin(17,machine.Pin.OUT)
+# # Set up WiFi connection
+# wlan = network.WLAN(network.STA_IF)
+# wlan.active(True)
 
-print(secrets.ssid_condo,secrets.password_condo)
-wlan.connect(secrets.ssid_condo,secrets.password_condo)
-# print(secrets.SSID,secrets.PASSWORD)
-# wlan.connect(secrets.SSID,secrets.PASSWORD)
+# print(secrets.ssid_condo,secrets.password_condo)
+# wlan.connect(secrets.ssid_condo,secrets.password_condo)
+# # print(secrets.SSID,secrets.PASSWORD)
+# # wlan.connect(secrets.SSID,secrets.PASSWORD)
  
-# Wait for connection
-while not wlan.isconnected():
-    time.sleep(1)
-print("Connection Completed")
-print('WiFi connected')
-print(wlan.ifconfig())
+# # Wait for connection
+# while not wlan.isconnected():
+#     time.sleep(1)
+# print("Connection Completed")
+# print('WiFi connected')
+# print(wlan.ifconfig())
  
-# Set up UDP server
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_socket.bind((wlan.ifconfig()[0], 12345))
-print("Server is Up and Listening")
-print(wlan.ifconfig()[0])
+# # Set up UDP server
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_socket.bind((wlan.ifconfig()[0], 12345))
+# print("Server is Up and Listening")
+# print(wlan.ifconfig()[0])
  
-while True:
-    print('Waiting for a request from the client...')
-    # Receive request from client
-    color, client_address = server_socket.recvfrom(1024)
-    color=color.decode()
-    print("Client Request:",color)
-    print("FROM CLIENT",client_address)
+# while True:
+#     print('Waiting for a request from the client...')
+#     # Receive request from client
+#     color, client_address = server_socket.recvfrom(1024)
+#     color=color.decode()
+#     print("Client Request:",color)
+#     print("FROM CLIENT",client_address)
     
-    if (color=="green"):
-        greenLED.on()
-        yellowLED.off()
-        redLED.off()
-    if (color=="yellow"):
-        greenLED.off()
-        yellowLED.on()
-        redLED.off()
-    if (color=="red"):
-        greenLED.off()
-        yellowLED.off()
-        redLED.on()
-    if (color=="off"):
-        greenLED.off()
-        yellowLED.off()
-        redLED.off()
+#     if (color=="green"):
+#         greenLED.on()
+#         yellowLED.off()
+#         redLED.off()
+#     if (color=="yellow"):
+#         greenLED.off()
+#         yellowLED.on()
+#         redLED.off()
+#     if (color=="red"):
+#         greenLED.off()
+#         yellowLED.off()
+#         redLED.on()
+#     if (color=="off"):
+#         greenLED.off()
+#         yellowLED.off()
+#         redLED.off()
     
-    # Send data to client
-    data="LED "+color+" executed"
-    server_socket.sendto(data.encode(), client_address)
-    print(f'Sent data to {client_address}')
+#     # Send data to client
+#     data="LED "+color+" executed"
+#     server_socket.sendto(data.encode(), client_address)
+#     print(f'Sent data to {client_address}')
     
-    # Optional: Pause for a short period to prevent overwhelming the client
-    time.sleep(1)
+#     # Optional: Pause for a short period to prevent overwhelming the client
+#     time.sleep(1)
 ## this is the client side for the picoW server above
 #### client for python  in Python_Book_New
 # import socket   ##client for PW110 in MIcropython_Programs/Basic_Programs/McWhorter/StateMachine/PIO_HCS04/PW_110_Socket_Server.py
@@ -79,7 +79,7 @@ while True:
  
 # # Set up UDP client
 # client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# server_address = ('192.168.1.223', 12345)  # Adjust IP address and port as needed
+# server_address = ('192.168.1.32', 12345)  # Adjust IP address and port as needed
  
 # while True:
 #     # Send request to the server
@@ -173,7 +173,7 @@ while True:
 #     time.sleep(1)
     
 ## client side     
-'''
+
 
 
 import socket
@@ -181,7 +181,7 @@ import time
  
 # Set up UDP client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.88.71', 12345)  # Adjust IP address and port as needed
+server_address = ('192.168.1.32', 12345)  # Adjust IP address and port as needed
  
 while True:
     # Send request to the server
@@ -194,7 +194,6 @@ while True:
     print('Received data:', data.decode())
 
 
-'''
 ### March3, 2025 with struct  this works and uses the client .py that follows
 
 ###### the client side /Users/judsonbelmont/Documents/SharedFolders/Python/Python_Book_New/UDP/UDP_C_PW110.py
@@ -264,7 +263,7 @@ while True:
     
 #     time.sleep(1)
     
-## try to run the above from a picoW as the client but use buttons for the input    
+## try to run the above from a picoW as the client but use buttons for the input  THIS WORKS ON CLIENT PICO  
 # import network
 # import usocket as socket
 # import time
@@ -272,7 +271,7 @@ while True:
 # from machine import Pin
 
 # # Button pin assignments
-# gPin, yPin, rPin, offPin = 13, 14, 15, 12
+# gPin, yPin, rPin, offPin = 13, 14, 15, 9
 # greenBut = Pin(gPin, Pin.IN, Pin.PULL_DOWN)
 # yellowBut = Pin(yPin, Pin.IN, Pin.PULL_DOWN)
 # redBut = Pin(rPin, Pin.IN, Pin.PULL_DOWN)
@@ -281,8 +280,8 @@ while True:
 # # WiFi setup
 # wlan = network.WLAN(network.STA_IF)
 # wlan.active(True)
-# wlan.connect('SpectrumSetup-41', 'leastdinner914')
-# # wlan.connect('NETGEAR48', 'waterypanda901')
+# # wlan.connect('SpectrumSetup-41', 'leastdinner914')
+# wlan.connect('NETGEAR48', 'waterypanda901')
 
 # while not wlan.isconnected():
 #     time.sleep(1)
@@ -291,7 +290,7 @@ while True:
 
 # # Set up UDP client
 # client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# server_address = ('192.168.1.223', 12345)
+# server_address = ('192.168.1.32', 12345)
 # last_command = None  # Store the last command to prevent redundant sending
 
 # while True:
@@ -309,17 +308,39 @@ while True:
 
 #     # Send command only if it's new
 #     if command and command != last_command:
-#         packed_command = struct.pack(f'{len(command)}s', command.encode())
-#         client_socket.sendto(packed_command, server_address)
+#         ## struct pack and unpack
+#         # packed_command = struct.pack(f'{len(command)}s', command.encode())
+#         # client_socket.sendto(packed_command, server_address)
         
-#         # Receive acknowledgment
-#         response, _ = client_socket.recvfrom(1024)
-#         length = len(response)
-#         unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
-#         print("Server Response:", unpacked_response)
+        
+#         # Send command directly to server on button press
+#         client_socket.sendto(command.encode(), server_address)
+#         ## Receive acknowledgment struct format
+#         # response, _ = client_socket.recvfrom(1024)
+#         # length = len(response)
+#         # unpacked_response = struct.unpack(f'{length}s', response)[0].decode()
+#         # print("Server Response:", unpacked_response)
+
+#         ## Receive acknowledgement from the server
+#         data, addr = client_socket.recvfrom(1024)
+#         print('Received data:', data.decode())
 
 #         last_command = command  # Update last command
 #         time.sleep(0.1)  # Debounce
 
 #     time.sleep(0.1)  # Small delay to reduce CPU usage
 
+ 
+# # Set up UDP client
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_address = ('192.168.1.32', 12345)  # Adjust IP address and port as needed
+ 
+# while True:
+#     # Send request to the server
+#     myColor=input("Please Input Your Color (Green, Yellow, Red, Off )")
+#     myColor=myColor.lower()
+#     client_socket.sendto(myColor.encode(), server_address)
+    
+#     # Receive data from the server
+#     data, addr = client_socket.recvfrom(1024)
+#     print('Received data:', data.decode())
