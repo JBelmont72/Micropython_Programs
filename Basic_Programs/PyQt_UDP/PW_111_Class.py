@@ -37,13 +37,13 @@ class MainWindow(QWidget):
         blueButton = QPushButton('Blue Button')
         blueButton.setStyleSheet('background-color: blue;color: white;')
         blueButton.clicked.connect(self.blueButtonpressed)
-        buttonBox.addWidget(blueButton)
+        buttonBox.addWidget(blueButton)## add the button to the buttonBox
 
         # Red Button
         redButton = QPushButton('Red Button')
         redButton.setStyleSheet('background-color: red;color: white')
         redButton.clicked.connect(self.redButtonpressed)
-        buttonBox.addWidget(redButton)
+        buttonBox.addWidget(redButton) ## add the button to the buttonBox
 
         # Yellow Button
         yellowButton = QPushButton('Yellow Button')
@@ -65,7 +65,7 @@ class MainWindow(QWidget):
         
         buttonBox.addWidget(self.offButton)
 
-        widgetBox.addLayout(buttonBox) ## here i add the buttonBOx to the widgetBox
+        widgetBox.addLayout(buttonBox) ## here i add the buttonBOx to the widgetBox!!NOTE that the buttonBox is added to the widgetBox and not the other way around
 
         # Slider Label and Slider
         self.sliderLabel = QLabel("Frequency: 1.0 Hz")
@@ -82,7 +82,7 @@ class MainWindow(QWidget):
 
         widgetBox.addWidget(self.sliderLabel)
         widgetBox.addWidget(self.slider)
-        widgetBox.addStretch()
+        widgetBox.addStretch()## important to add stretch to the layout so that the widgets are raised to the top of the window
 
         self.setLayout(widgetBox)
         self.show()

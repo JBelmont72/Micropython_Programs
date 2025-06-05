@@ -26,6 +26,12 @@ If the server prints Client Request: test, you know the connection works!
 # # Set up WiFi connection
 # wlan = network.WLAN(network.STA_IF)
 # wlan.active(True)
+# greenLED=machine.Pin(16,machine.Pin.OUT)
+# yellowLED=machine.Pin(18,machine.Pin.OUT)
+# redLED=machine.Pin(17,machine.Pin.OUT)
+# # Set up WiFi connection
+# wlan = network.WLAN(network.STA_IF)
+# wlan.active(True)
 
 # print(secrets.ssid_home,secrets.password_home)
 # wlan.connect(secrets.ssid_home,secrets.password_home)
@@ -40,13 +46,31 @@ If the server prints Client Request: test, you know the connection works!
 # print("Connection Completed")
 # print('WiFi connected')
 # print(wlan.ifconfig())
+# # Wait for connection
+# while not wlan.isconnected():
+#     time.sleep(1)
+# print("Connection Completed")
+# print('WiFi connected')
+# print(wlan.ifconfig())
  
 # # Set up UDP server
 # server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # server_socket.bind((wlan.ifconfig()[0], 12345))
 # print("Server is Up and Listening")
 # print(wlan.ifconfig()[0])
+# # Set up UDP server
+# server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_socket.bind((wlan.ifconfig()[0], 12345))
+# print("Server is Up and Listening")
+# print(wlan.ifconfig()[0])
  
+# while True:
+#     print('Waiting for a request from the client...')
+#     # Receive request from client
+#     color, client_address = server_socket.recvfrom(1024)
+#     color=color.decode()
+#     print("Client Request:",color)
+#     print("FROM CLIENT",client_address)
 # while True:
 #     print('Waiting for a request from the client...')
 #     # Receive request from client
@@ -71,12 +95,34 @@ If the server prints Client Request: test, you know the connection works!
 #         greenLED.off()
 #         yellowLED.off()
 #         redLED.off()
+#     if (color=="green"):
+#         greenLED.on()
+#         yellowLED.off()
+#         redLED.off()
+#     if (color=="yellow"):
+#         greenLED.off()
+#         yellowLED.on()
+#         redLED.off()
+#     if (color=="red"):
+#         greenLED.off()
+#         yellowLED.off()
+#         redLED.on()
+#     if (color=="off"):
+#         greenLED.off()
+#         yellowLED.off()
+#         redLED.off()
     
 #     # Send data to client
 #     data="LED "+color+" executed"
 #     server_socket.sendto(data.encode(), client_address)
 #     print(f'Sent data to {client_address}')
+#     # Send data to client
+#     data="LED "+color+" executed"
+#     server_socket.sendto(data.encode(), client_address)
+#     print(f'Sent data to {client_address}')
     
+#     # Optional: Pause for a short period to prevent overwhelming the client
+#     time.sleep(1)
 #     # Optional: Pause for a short period to prevent overwhelming the client
 #     time.sleep(1)
 ## this is the client side for the picoW server above
@@ -180,7 +226,7 @@ while True:
 #     time.sleep(1)
     
 ## client side     
-'''
+
 
 
 import socket   #4 client on python txt editor
@@ -188,7 +234,7 @@ import time
  
 # Set up UDP client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.88.71', 12345)  # Adjust IP address and port as needed
+server_address = ('192.168.1.32', 12345)  # Adjust IP address and port as needed
  
 while True:
     # Send request to the server
@@ -201,7 +247,6 @@ while True:
     print('Received data:', data.decode())
 
 
-'''
 ### March3, 2025 with struct  this works and uses the client .py that follows
 
 ###### the client side /Users/judsonbelmont/Documents/SharedFolders/Python/Python_Book_New/UDP/UDP_C_PW110.py
@@ -336,3 +381,17 @@ while True:
 
     time.sleep(0.1)  # Small delay to reduce CPU usage
 
+ 
+# # Set up UDP client
+# client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# server_address = ('192.168.1.32', 12345)  # Adjust IP address and port as needed
+ 
+# while True:
+#     # Send request to the server
+#     myColor=input("Please Input Your Color (Green, Yellow, Red, Off )")
+#     myColor=myColor.lower()
+#     client_socket.sendto(myColor.encode(), server_address)
+    
+#     # Receive data from the server
+#     data, addr = client_socket.recvfrom(1024)
+#     print('Received data:', data.decode())
