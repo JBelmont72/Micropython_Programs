@@ -1,8 +1,12 @@
 ''' PW 109 pico server and python client
 
-send and receive data between the Raspberry Pi Pico W, and your  PC. We will be running python on the PC, and we will exchange data using the UDP protocol. UDP is simple, and a very reliable way to send data packets back and forth. In this example, we will be demonstrating a simple Client Server relationship between the Pi Pico and PC using UDP over WiFi.ç
+send and receive data between the Raspberry Pi Pico W, and your  PC. We will be running python on the PC, and we will exchange data using the UDP protocol. UDP is simple, and a very reliable way to send data packets back and forth. In this example, we will be demonstrating a simple Client Server relationship between the Pi Pico and PC using UDP over WiFi.
+THis is interesting and can help trouble shooting
+
+In terminal can use command   echo -n "test" | nc -u 192.168.1.31 12345
+If the server prints the Client Request: test, you know the connection works!
 '''
-# ## original PW109 server
+## original PW109 server
 # import network
 # import usocket as socket
 # # import secrets
@@ -100,13 +104,13 @@ send and receive data between the Raspberry Pi Pico W, and your  PC. We will be 
 #     # Optional: Pause for a short period to prevent overwhelming the client
 #     time.sleep(1)
 
-### Client side 
+### Client side works fine 
 import socket
 import time
  
 # Set up UDP client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.1.223', 12345)  # Adjust IP address and port as needed
+server_address = ('192.168.1.31', 12345)  # Adjust IP address and port as needed
  
 while True:
     # Send request to the server

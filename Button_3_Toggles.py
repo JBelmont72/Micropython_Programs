@@ -18,9 +18,9 @@ while True:
 # toggle Button
 
 buttonPin = 15
-pushButton = Pin(buttonPin,Pin.IN,Pin.PULL_UP)
-newButtonVal = 1
-oldButtonVal = 1
+pushButton = Pin(buttonPin,Pin.IN,Pin.PULL_DOWN)
+# newButtonVal = 1
+oldButtonVal = 0
 buttonState = False
 
 
@@ -33,7 +33,7 @@ while True:
     print(newButtonVal, oldButtonVal)
     sleep(1)
     
-    if( newButtonVal == 0 and oldButtonVal == 1):
+    if( newButtonVal == 1 and oldButtonVal == 0):
         if buttonState3 == False:
     
             if buttonState == False and buttonState3 == False:

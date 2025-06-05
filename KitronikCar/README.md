@@ -1,7 +1,7 @@
 Other languages: [FRANCAIS](README_FR.md)
 # Kitronik-Pico-Autonomous-Robotics-Platform-MicroPython
 A class and sample code for the Kitronik Autonomous Robotics Platform for the Raspberry Pi Pico. (www.kitronik.co.uk/5335)
-
+motor controlller is https://toshiba.semicon-storage.com/info/TC78H653FTG_datasheet_en_20190404.pdf?did=63589&prodName=TC78H653FTG
 On the Autonomous Robotics Platform:  
 * Forward is defined as the end away from the power switch / castor  
 * Left and Right are defined when facing Forward  
