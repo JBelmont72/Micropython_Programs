@@ -8,9 +8,6 @@ You generate new x, but you use self.x (which is never updated) in setData():
 
 Problem:
 
-python
-Copy
-Edit
 x = np.linspace(self.xStart, self.xStop, self.numPoints)
 self.ySin = np.sin(self.frequency * self.x + self.count * self.incR / 100 * self.frequency)
 # ...
@@ -32,10 +29,6 @@ Your frequency is updated with the slider, but the label is never updated.
 Fix:
 
 In updateFrequency():
-
-python
-Copy
-Edit
 def updateFrequency(self, value):
     self.frequency = value / 10
     self.sliderLabel.setText(f"Frequency: {self.frequency:.1f} Hz")
@@ -44,9 +37,6 @@ You're setting the same layout multiple times:
 
 Problem:
 
-python
-Copy
-Edit
 self.setLayout(mainLayout)
 # ...
 self.graphWidget.setLayout(mainLayout)  # ❌ This is wrong — graphWidget shouldn't set the main layout
@@ -55,15 +45,11 @@ Fix:
 
 Just set it once in the main window:
 
-python
-Copy
-Edit
+p
 self.setLayout(mainLayout)
 Remove:
 
-python
-Copy
-Edit
+p
 self.graphWidget.setLayout(mainLayout)  # ❌
 ✅ 4. Unnecessary re-plotting of initial values
 You create initial ySin, ySin2, ySin3 but never plot them during __init__. They’re also not used afterward.
@@ -72,9 +58,6 @@ Fix (Optional):
 
 You could initialize your plots here instead if you wanted to show the wave immediately:
 
-python
-Copy
-Edit
 self.plotSin.setData(self.x, ySin)
 self.plotSin2.setData(self.x, ySin2)
 self.plotSin3.setData(self.x, ySin3)
@@ -83,9 +66,6 @@ But since updatePlot() starts immediately, this is not strictly needed.
 ✅ 5. UI polish: Better window title usage
 You're redundantly setting the title twice:
 
-python
-Copy
-Edit
 self.setWindowTitle('My Window')
 ...
 self.setWindowTitle('The Magic of Sin Waves')
@@ -100,15 +80,10 @@ Fix:
 
 Just remove the argument:
 
-python
-Copy
-Edit
 w = MainWindow()
 Or use:
 
-python
-Copy
-Edit
+
 class MainWindow(qtw.QWidget):
     def __init__(self, *args, windowTitle='The Magic of Sin Waves', **kwargs):
         super().__init__(*args, **kwargs)

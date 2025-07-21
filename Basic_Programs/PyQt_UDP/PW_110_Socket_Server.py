@@ -1,7 +1,8 @@
 '''PW 110
+/Users/judsonbelmont/Documents/Shared_Folders/Micropython_Programs/Basic_Programs/PyQt_UDP/PW_110_Socket_Server.py
 print(wlan.ifconfig()[0])
 
-A simple client server project on the Raspberry Pi Pico W. The Pico is configures as the server, and your desktop pc or laptop is configures to be the client. You will be running python on your PC. The project requests the user on the PC to specify a desired color. The color is then sent to the Pico, the Server. Then the Pico sets that color to ‘ON’. The pi pico is powered by a breadboard power bank, and there is no need for any connections to the pico. You can pick up the breadBoard Power Bank HERE [Affiliate Link]. Below is the schematic for the Server Side of the project:
+A simple client server project on the Raspberry Pi Pico W. The Pico is configures as the server, and your desktop pc or laptop is configured to be the client.  running python on  PC. The project requests the user on the PC to specify a desired color. The color is then sent to the Pico, the Server. Then the Pico sets that color to ‘ON’. The pi pico is powered by a breadboard power bank, and there is no need for any connections to the pico. Using a breadBoard Power Bank . Below is the schematic for the Server Side of the project:
 PW_110_CLient.py in python_book_new Folder
 1- the pico server
 2- the struct form of pico server 
@@ -13,7 +14,7 @@ If the server prints Client Request: test, you know the connection works!
 
 
 '''
-# ## PicoW Server
+# ## PicoW Server had to use soft reboot on THonny, optimized form at bottom and /Users/judsonbelmont/Documents/Shared_Folders/MCWhorter_WiFi_Pico/UDP_NeuralNine/UDP_Server_1.py
 # import network
 # import usocket as socket
 # import secrets
@@ -26,12 +27,7 @@ If the server prints Client Request: test, you know the connection works!
 # # Set up WiFi connection
 # wlan = network.WLAN(network.STA_IF)
 # wlan.active(True)
-# greenLED=machine.Pin(16,machine.Pin.OUT)
-# yellowLED=machine.Pin(18,machine.Pin.OUT)
-# redLED=machine.Pin(17,machine.Pin.OUT)
-# # Set up WiFi connection
-# wlan = network.WLAN(network.STA_IF)
-# wlan.active(True)
+
 
 # print(secrets.ssid_home,secrets.password_home)
 # wlan.connect(secrets.ssid_home,secrets.password_home)
@@ -46,36 +42,19 @@ If the server prints Client Request: test, you know the connection works!
 # print("Connection Completed")
 # print('WiFi connected')
 # print(wlan.ifconfig())
-# # Wait for connection
-# while not wlan.isconnected():
-#     time.sleep(1)
-# print("Connection Completed")
-# print('WiFi connected')
-# print(wlan.ifconfig())
  
 # # Set up UDP server
 # server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # server_socket.bind((wlan.ifconfig()[0], 12345))
 # print("Server is Up and Listening")
 # print(wlan.ifconfig()[0])
-# # Set up UDP server
-# server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-# server_socket.bind((wlan.ifconfig()[0], 12345))
-# print("Server is Up and Listening")
-# print(wlan.ifconfig()[0])
- 
+
+
 # while True:
 #     print('Waiting for a request from the client...')
 #     # Receive request from client
 #     color, client_address = server_socket.recvfrom(1024)
-#     color=color.decode()
-#     print("Client Request:",color)
-#     print("FROM CLIENT",client_address)
-# while True:
-#     print('Waiting for a request from the client...')
-#     # Receive request from client
-#     color, client_address = server_socket.recvfrom(1024)
-#     color=color.decode()
+#     color=color.decode().strip()
 #     print("Client Request:",color)
 #     print("FROM CLIENT",client_address)
     
@@ -126,13 +105,13 @@ If the server prints Client Request: test, you know the connection works!
 #     # Optional: Pause for a short period to prevent overwhelming the client
 #     time.sleep(1)
 ## this is the client side for the picoW server above
-####  2  client for python  in Python_Book_New
+# ####  2  client for python  in Python_Book_New
 import socket   ##client for PW110 in MIcropython_Programs/Basic_Programs/McWhorter/StateMachine/PIO_HCS04/PW_110_Socket_Server.py
 import time
  
 # Set up UDP client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.1.31', 12345)  # Adjust IP address and port as needed
+server_address = ('192.168.1.25', 12345)  # Adjust IP address and port as needed
  
 while True:
     # Send request to the server
@@ -395,3 +374,74 @@ while True:
 #     # Receive data from the server
 #     data, addr = client_socket.recvfrom(1024)
 #     print('Received data:', data.decode())
+
+
+## optimized version with try except to close open socket and 
+import network
+import usocket as socket
+import secrets
+import time
+import machine
+
+# LED setup
+greenLED = machine.Pin(16, machine.Pin.OUT)
+yellowLED = machine.Pin(18, machine.Pin.OUT)
+redLED = machine.Pin(17, machine.Pin.OUT)
+
+# Connect to WiFi
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+print(secrets.ssid_home, secrets.password_home)
+wlan.connect(secrets.ssid_home, secrets.password_home)
+
+while not wlan.isconnected():
+    time.sleep(1)
+
+print("Connection Completed")
+print('WiFi connected')
+ip = wlan.ifconfig()[0]
+print(wlan.ifconfig())
+
+try:
+    server_socket.close()
+    print('socket closed')
+except:
+	print('old socket is closed')
+    pass
+
+
+
+# Setup UDP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # Not always required on UDP but safe
+server_socket.bind((ip, 12345))
+print("Server is Up and Listening on", ip)
+
+try:
+    while True:
+        print('Waiting for a request from the client...')
+        message, client_address = server_socket.recvfrom(1024)
+        color = message.decode().strip()
+        print("Client Request:", color)
+        print("FROM CLIENT:", client_address)
+
+        # Control LEDs
+        greenLED.value(color == "green")
+        yellowLED.value(color == "yellow")
+        redLED.value(color == "red")
+
+        if color == "off":
+            greenLED.off()
+            yellowLED.off()
+            redLED.off()
+
+        # Send response to client
+        response = f"LED {color} executed"
+        server_socket.sendto(response.encode(), client_address)
+        print(f'Sent data to {client_address}')
+
+        time.sleep(0.2)  # Prevent flooding
+except KeyboardInterrupt:
+    print("Shutting down server.")
+finally:
+    server_socket.close()

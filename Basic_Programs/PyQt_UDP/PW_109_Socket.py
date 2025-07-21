@@ -6,7 +6,7 @@ THis is interesting and can help trouble shooting
 In terminal can use command   echo -n "test" | nc -u 192.168.1.31 12345
 If the server prints the Client Request: test, you know the connection works!
 '''
-## original PW109 server
+# # original PW109 server ## lesson 109 minute 10.  ##1 server side on pico Works
 # import network
 # import usocket as socket
 # # import secrets
@@ -23,8 +23,9 @@ If the server prints the Client Request: test, you know the connection works!
 # print("Connection Completed")
 # print('WiFi connected')
 # print(wlan.ifconfig())
+# print(wlan.ifconfig()[0])
  
-# # Set up UDP server
+# # # Set up UDP server
 # server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # server_socket.bind((wlan.ifconfig()[0], 12345))
 # print("Server is Up and Listening")
@@ -47,10 +48,10 @@ If the server prints the Client Request: test, you know the connection works!
 #     # Optional: Pause for a short period to prevent overwhelming the client
 #     time.sleep(1)
 ####~~~~
-##original client from PW 109 that works with above***** does work when entered via terminal
+##original client from PW 109 that works with above***** does work when entered via terminal 
 
 
-####~~~~~~
+####~~~~~~. #1 Client side on Mac works with #1 Pico server above
 
 # import network
 # import usocket as socket
@@ -110,7 +111,7 @@ import time
  
 # Set up UDP client
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('192.168.1.31', 12345)  # Adjust IP address and port as needed
+server_address = ('192.168.1.10', 12345)  # Adjust IP address and port as needed
  
 while True:
     # Send request to the server
@@ -185,7 +186,7 @@ while True:
 #     # Optional: Pause for a short period to prevent overwhelming the client
 #     time.sleep(1)
     
-### this is the picoW SERVER program to go with above CLIENT program
+### this is the picoW SERVER program to go with above CLIENT program using struct
 # import network
 # import usocket as socket
 # # import secrets
