@@ -1,11 +1,32 @@
 '''27 March 2025 I used the inverse  log  to create a yellowLed to use a calculated 
-inverse of the brightness   2** exponent   and 2**(16-exponent)    
+inverse of the brightness   2** exponent   and 2**(16-exponent)   
+ 
 '''
-
-
+# from machine import Pin
+# from random import randint ## fun with randint
+# from time import sleep
+# import sys
+# RedLed=16
+# YellowLed =17
+# GreenLed =18
+# Red=Pin(RedLed,Pin.OUT)
+# Yellow=Pin(YellowLed,Pin.OUT)
+# Green=Pin(GreenLed,Pin.OUT)
+# try:
+#     while True:
+#         Red.value(randint(0,1)) 
+#         Green.value(randint(0,1))
+#         Yellow.value(randint(0,1)) 
+#         sleep(.5)
+# except KeyboardInterrupt:
+#     sys.exit()
+#     print('Done')
+    
 from machine import PWM,Pin,ADC 
 from time import sleep
 import math
+import machine
+
 RedLed = 16
 YellowLed =17
 GreenLed =18

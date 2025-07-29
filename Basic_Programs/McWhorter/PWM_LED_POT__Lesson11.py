@@ -1,22 +1,22 @@
 from machine import PWM,Pin,ADC
 from time import sleep
 
-'''	THe libfary is Machine and the methods are PWM and PIN etc
+'''	THe library is Machine and the methods are PWM and PIN etc
 
-us the dot to add attributes to object, use () to add variabloes to methods
+us the dot to add attributes to object, use () to add variables to methods
 '''
 outPin = 17
-analogOut =machine.PWM(Pin(outPin))
+analogOut =PWM(Pin(outPin))
 #	the PWM "object" is analogOut.  we create a PWM channmel connected to outPin to create a PWM "OBJECT"
 
 analogOut.freq(1000)
 analogOut.duty_u16(0)
 #	lesson 11
-potPin =27
-myPot = machine.ADC(potPin) #don't need machine
+potPin =28
+myPot = ADC(potPin) #don't need machine
 
 redLed = 16
-RedLed = machine.PWM(Pin(redLed))
+RedLed = PWM(Pin(redLed))
 RedLed.freq(1000)
 RedLed.duty_u16(0)
 # Lesson 10 Paul McWhorter
