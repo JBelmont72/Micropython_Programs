@@ -1,6 +1,7 @@
 import machine
 import time
-led=machine.Pin(2,machine.Pin.OUT)
+# led=machine.Pin(2,machine.Pin.OUT)
+led=machine.Pin('LED',machine.Pin.OUT)
 # led = machine.Pin('LED',machine.Pin.OUT)    ## this is the on board LED
 # led = machine.Pin(machine.Pin(14),machine.Pin.OUT) ##change the pin number as desired
 blinkInterval=.2
