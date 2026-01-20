@@ -1,5 +1,7 @@
 '''27 March 2025 I used the inverse  log  to create a yellowLed to use a calculated 
-inverse of the brightness   2** exponent   and 2**(16-exponent)   
+inverse of the brightness   2** exponent   and 2**(16-exponent)
+
+Detailed ESP32 PWM  https://lastminuteengineers.com/esp32-pwm-tutorial/
  
 '''
 # from machine import Pin
